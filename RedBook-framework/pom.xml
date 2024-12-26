@@ -20,6 +20,8 @@
     <modules>
         <!-- 通用工具组件 -->
         <module>RedBook-common</module>
+        <!-- 接口日志组件 -->
+        <module>RedBook-spring-boot-starter-biz-operationlog</module>
     </modules>
 
 </project>
