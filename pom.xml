@@ -31,7 +31,8 @@
     <jackson.version>2.16.1</jackson.version>
     <!-- MySQL 驱动版本号 -->
     <mysql-connector-java.version>8.0.29</mysql-connector-java.version>
-
+    <!-- druid 版本号 -->
+    <druid.version>1.2.21</druid.version>
 
     <!-- JDK 版本 -->
     <java.version>17</java.version>
@@ -129,6 +130,15 @@
         <artifactId>mysql-connector-java</artifactId>
         <version>${mysql-connector-java.version}</version>
       </dependency>
+
+      <!-- Druid 数据库连接池 -->
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>druid-spring-boot-3-starter</artifactId>
+        <version>${druid.version}</version>
+      </dependency>
+
+
     </dependencies>
   </dependencyManagement>
 
@@ -173,16 +183,20 @@
 
   <!-- 添加华为云、阿里云 maven 中央仓库，提升依赖下载速度 -->
   <repositories>
+
     <repository>
       <id>huaweicloud</id>
       <name>huawei</name>
       <url>https://mirrors.huaweicloud.com/repository/maven/</url>
     </repository>
+
     <repository>
       <id>aliyunmaven</id>
       <name>aliyun</name>
       <url>https://maven.aliyun.com/repository/public</url>
     </repository>
+
+
   </repositories>
 
 </project>

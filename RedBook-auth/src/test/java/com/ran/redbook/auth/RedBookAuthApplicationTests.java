@@ -37,7 +37,7 @@ class RedBookAuthApplicationTests {
     @Test
     void testSelect() {
         // 查询主键 ID 为 1 的记录
-        UserDO userDO = userDOMapper.selectByPrimaryKey(2L);
+        UserDO userDO = userDOMapper.selectByPrimaryKey(1L);
         log.info("User: {}", JsonUtils.toJsonString(userDO));
     }
 
