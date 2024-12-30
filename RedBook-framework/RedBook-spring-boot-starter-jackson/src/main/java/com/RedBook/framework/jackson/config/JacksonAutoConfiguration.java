@@ -1,9 +1,5 @@
 package com.RedBook.framework.jackson.config;
 
-import org.springframework.boot.autoconfigure.AutoConfiguration;
-
-import com.RedBook.framework.common.constant.DateConstants;
-import com.RedBook.framework.common.util.JsonUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -15,19 +11,27 @@ import com.fasterxml.jackson.datatype.jsr310.deser.YearMonthDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
+
+
 import com.fasterxml.jackson.datatype.jsr310.ser.YearMonthSerializer;
+import com.RedBook.framework.common.constant.DateConstants;
+import com.RedBook.framework.common.util.JsonUtils;
+
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
 
+/**
+ * @author ran
+ */
 @AutoConfiguration
 public class JacksonAutoConfiguration {
+
     @Bean
     public ObjectMapper objectMapper() {
         // 初始化一个 ObjectMapper 对象，用于自定义 Jackson 的行为
@@ -36,7 +40,6 @@ public class JacksonAutoConfiguration {
         // 忽略未知属性
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-
         // 设置凡是为 null 的字段，返参中均不返回，请根据项目组约定是否开启
         // objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
@@ -59,9 +62,11 @@ public class JacksonAutoConfiguration {
 
         objectMapper.registerModule(javaTimeModule);
 
-        // 初始化JsonUtils 中的ObjectMapper
+        // 初始化 JsonUtils 中的 ObjectMapper
         JsonUtils.init(objectMapper);
 
         return objectMapper;
     }
+
 }
+
