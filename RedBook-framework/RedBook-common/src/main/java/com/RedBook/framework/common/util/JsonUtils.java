@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 
 public class JsonUtils {
     // 创建了一个私有的静态不可变的 ObjectMapper 实例，ObjectMapper 是 Jackson 库中用于序列化和反序列化 JSON 的核心类。
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     /*
      * 这是一个静态初始化块，用于在类加载时执行一些初始化操作。在这里，
@@ -26,15 +26,28 @@ public class JsonUtils {
         OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         OBJECT_MAPPER.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 
-        // JavaTimeModule 用于指定序列化和反序列化规则
-        JavaTimeModule javaTimeModule = new JavaTimeModule();
+//        // JavaTimeModule 用于指定序列化和反序列化规则
+//        JavaTimeModule javaTimeModule = new JavaTimeModule();
+//
+//        // 支持 LocalDateTime
+//        javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DateConstants.Y_M_D_H_M_S_FORMAT)));
+//        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DateConstants.Y_M_D_H_M_S_FORMAT)));
+//        OBJECT_MAPPER.registerModules(javaTimeModule); // 解决 LocalDateTime 的序列化问题
 
-        // 支持 LocalDateTime
-        javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DateConstants.Y_M_D_H_M_S_FORMAT)));
-        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DateConstants.Y_M_D_H_M_S_FORMAT)));
+        // 解决 LocalDateTime 的序列化问题
+        OBJECT_MAPPER.registerModules(new JavaTimeModule());
 
-        OBJECT_MAPPER.registerModules(javaTimeModule); // 解决 LocalDateTime 的序列化问题
     }
+
+    /**
+     * 初始化：统一使用 Spring Boot 个性化配置的 ObjectMapper
+     *
+     * @param objectMapper
+     */
+    public static void init(ObjectMapper objectMapper) {
+        OBJECT_MAPPER = objectMapper;
+    }
+
 
     /**
      * 将对象转换为 JSON 字符串
