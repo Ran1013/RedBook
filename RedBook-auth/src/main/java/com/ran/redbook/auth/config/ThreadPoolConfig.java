@@ -9,7 +9,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author ran
- * @description 自定义线程池
+ * 自定义线程池
  */
 @Configuration
 public class ThreadPoolConfig {
