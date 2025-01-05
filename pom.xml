@@ -45,6 +45,9 @@
         <hutool.version>5.8.26</hutool.version>
         <!-- commons-lang3 版本号-->
         <commons-lang3.version>3.12.0</commons-lang3.version>
+        <!-- 阿里云短信发送版本 -->
+        <dysmsapi.version>3.1.1</dysmsapi.version>
+
 
         <!-- JDK 版本 -->
         <java.version>17</java.version>
@@ -183,8 +186,12 @@
                 <version>${commons-lang3.version}</version>
             </dependency>
 
-
-
+            <!-- 阿里云短信发送 -->
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>dysmsapi20170525</artifactId>
+                <version>${dysmsapi.version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>
