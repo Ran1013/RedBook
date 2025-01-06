@@ -2,19 +2,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <!-- 指定父项目 -->
     <parent>
         <groupId>com.RedBook</groupId>
         <artifactId>RedBook</artifactId>
         <version>${revision}</version>
     </parent>
+
     <!-- 指定打包方式 -->
     <packaging>jar</packaging>
-
-    <artifactId>RedBook-auth</artifactId>
+    <artifactId>RedBookshu-auth</artifactId>
     <name>${project.artifactId}</name>
-    <description>小红书：认证服务（负责处理用户登录、注册、账号注销等）</description>
-
+    <description>小哈书：认证服务（负责处理用户登录、注册、账号注销等）</description>
 
     <dependencies>
         <dependency>
@@ -28,11 +28,6 @@
             <artifactId>RedBook-spring-boot-starter-biz-operationlog</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
         <!-- Jackson 组件 -->
         <dependency>
             <groupId>com.RedBook</groupId>
@@ -41,9 +36,15 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
         <!-- Mybatis -->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
@@ -61,9 +62,17 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-3-starter</artifactId>
         </dependency>
+
+        <!-- Sa-Token 权限认证 -->
         <dependency>
             <groupId>cn.dev33</groupId>
             <artifactId>sa-token-spring-boot3-starter</artifactId>
+        </dependency>
+
+        <!-- Sa-Token 整合 Redis （使用 jackson 序列化方式） -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-redis-jackson</artifactId>
         </dependency>
 
         <!-- Redis -->
@@ -91,13 +100,11 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-
             <!-- 代码生成器 -->
             <plugin>
                 <groupId>org.mybatis.generator</groupId>
                 <artifactId>mybatis-generator-maven-plugin</artifactId>
             </plugin>
-
         </plugins>
     </build>
 
