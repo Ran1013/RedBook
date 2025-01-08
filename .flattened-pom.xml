@@ -7,7 +7,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
-  <description>小哈书（仿小红书），基于 Spring Cloud Alibaba 微服务架构</description>
+  <description>小红书（仿小红书），基于 Spring Cloud Alibaba 微服务架构</description>
   <modules>
     <module>RedBook-framework</module>
     <module>RedBook-auth</module>
