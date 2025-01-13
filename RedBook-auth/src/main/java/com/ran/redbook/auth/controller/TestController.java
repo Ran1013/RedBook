@@ -11,13 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 public class TestController {
-    @Resource
-    private AlarmInterface alarm;
-
 
     @NacosValue(value = "${rate-limit.api.limit}", autoRefreshed = true)
     private Integer limit;
 
+    @Resource
+    private AlarmInterface alarm;
 
     @GetMapping("/test")
     public String test() {
