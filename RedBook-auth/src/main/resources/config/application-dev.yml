@@ -4,7 +4,7 @@ spring:
     # 数据库连接信息
     url: jdbc:mysql://127.0.0.1:3307/redbook?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=false&serverTimezone=Asia/Shanghai
     username: root # 数据库用户名
-    password: Lw+RHgbkPPheIhTnOHwASl7g0yMD4PSyNSnx4Gh3QqHDzNzbMqZhCQYEbms/S8W03lmwY8eXC8dlxUH50GOn6Q== # 数据库密码
+    password: PcfoaqkPhkaHY4gjIJX4zzT6wcqKlg5M1Xoexz58iqoEYtc92XwBmKh4tUF/pJbTiE7PsuxAZlKzKXljruDo2g== # 数据库密码
     #Druid 内置的密码加密 test包下 DruidTests
     #password: root  #原数据库密码
 
@@ -20,7 +20,7 @@ spring:
       min-evictable-idle-time-millis: 300000 # 配置一个连接在连接池中最小生存的时间（单位：毫秒）
       max-evictable-idle-time-millis: 900000 # 配置一个连接在连接池中最大生存的时间（单位：毫秒）
       validation-query: SELECT 1 FROM DUAL # 配置测试连接是否可用的查询 sql
-      connectionProperties: config.decrypt=true;config.decrypt.key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAIBRIf9FrTUX2aqzIv1kz0Cvc0WQFyVIHmaH+NtATW+G/XHaORM/xPdJvdJy2FSwLkqt4p7vcpYuzUjHmM8htMkCAwEAAQ==
+      connectionProperties: config.decrypt=true;config.decrypt.key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBANFli5nbfddcygLRMXiLECzCC57PPWcgGaofCY8OdxjTBPyXnhYe0CJwZIUzxaoBX9kF7IP4KGLPj7csGs4zxSsCAwEAAQ==
       test-on-borrow: false
       test-on-return: false
       pool-prepared-statements: false
