@@ -27,7 +27,7 @@ public class TestController {
 
     @GetMapping("/alarm")
     public String sendAlarm() {
-        alarm.send("系统出错啦，ran这个月绩效没了，速度上线解决问题！");
+        alarm.send("系统出错啦，速度上线解决问题！");
         return "alarm success";
     }
 

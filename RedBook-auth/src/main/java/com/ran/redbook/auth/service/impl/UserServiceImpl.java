@@ -2,17 +2,17 @@ package com.ran.redbook.auth.service.impl;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
-import com.RedBook.framework.common.eumns.DeletedEnum;
-import com.RedBook.framework.common.eumns.StatusEnum;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
+import com.RedBook.framework.common.enums.DeletedEnum;
+import com.RedBook.framework.common.enums.StatusEnum;
 import com.RedBook.framework.common.exception.BizException;
 import com.RedBook.framework.common.response.Response;
 import com.RedBook.framework.common.util.JsonUtils;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
-
-
 import com.ran.redbook.auth.constant.RedisKeyConstants;
 import com.ran.redbook.auth.constant.RoleConstants;
+import com.ran.redbook.auth.domain.dataobject.PermissionDO;
+import com.ran.redbook.auth.domain.dataobject.RoleDO;
 import com.ran.redbook.auth.domain.dataobject.UserDO;
 import com.ran.redbook.auth.domain.dataobject.UserRoleDO;
 import com.ran.redbook.auth.domain.mapper.UserDOMapper;
@@ -21,15 +21,16 @@ import com.ran.redbook.auth.enums.LoginTypeEnum;
 import com.ran.redbook.auth.enums.ResponseCodeEnum;
 import com.ran.redbook.auth.model.vo.user.UserLoginReqVO;
 import com.ran.redbook.auth.service.UserService;
-
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionTemplate;
-
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,9 +44,9 @@ public class UserServiceImpl implements UserService {
     @Resource
     private UserDOMapper userDOMapper;
     @Resource
-    private RedisTemplate<String, Object> redisTemplate;
-    @Resource
     private UserRoleDOMapper userRoleDOMapper;
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
     @Resource
     private TransactionTemplate transactionTemplate;
 
@@ -91,7 +92,6 @@ public class UserServiceImpl implements UserService {
                 if (Objects.isNull(userDO)) {
                     // 若此用户还没有注册，系统自动注册该用户
                     userId = registerUser(phone);
-
                 } else {
                     // 已注册，则获取其用户 ID
                     userId = userDO.getId();
@@ -104,6 +104,7 @@ public class UserServiceImpl implements UserService {
             default:
                 break;
         }
+
         // SaToken 登录用户, 入参为用户 ID
         StpUtil.login(userId);
 

@@ -1,4 +1,4 @@
-package com.RedBook.framework.common.eumns;
+package com.RedBook.framework.common.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
