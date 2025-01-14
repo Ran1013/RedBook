@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("ALL")
+
 @Component
 @Slf4j
 public class PushRolePermissions2RedisRunner implements ApplicationRunner {
@@ -96,8 +96,8 @@ public class PushRolePermissions2RedisRunner implements ApplicationRunner {
                     }
                 });
 
-                // 同步至 Redis 中，方便后续网关查询 Redis, 用于鉴权
                 roleIdPermissionDOMap.forEach((roleId, permissionDO) -> {
+                    // 同步至 Redis 中，方便后续网关查询 Redis, 用于鉴权
                     String key = RedisKeyConstants.buildRolePermissionsKey(roleId);
                     redisTemplate.opsForValue().set(key, JsonUtils.toJsonString(permissionDO));
                 });

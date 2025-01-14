@@ -1,7 +1,9 @@
 package com.ran.redbook.auth.alarm.impl;
 
+
 import com.ran.redbook.auth.alarm.AlarmInterface;
 import lombok.extern.slf4j.Slf4j;
+
 
 @Slf4j
 public class MailAlarmHelper implements AlarmInterface {
@@ -21,4 +23,3 @@ public class MailAlarmHelper implements AlarmInterface {
         return true;
     }
 }
-

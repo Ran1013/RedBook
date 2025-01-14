@@ -1,5 +1,6 @@
 package com.ran.redbook.auth.alarm;
 
+
 public interface AlarmInterface {
 
     /**
