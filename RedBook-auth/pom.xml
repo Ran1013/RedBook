@@ -92,6 +92,7 @@
             <groupId>com.aliyun</groupId>
             <artifactId>dysmsapi20170525</artifactId>
         </dependency>
+
         <!-- Nacos 配置中心 -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
@@ -109,8 +110,6 @@
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
 
-
-
     </dependencies>
 
     <build>
@@ -126,5 +125,6 @@
             </plugin>
         </plugins>
     </build>
+
 
 </project>
