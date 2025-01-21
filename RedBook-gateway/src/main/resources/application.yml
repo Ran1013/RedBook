@@ -1,0 +1,12 @@
+server:
+  port: 8121 # 项目启动的端口
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: auth
+          uri: lb://RedBook-auth
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
