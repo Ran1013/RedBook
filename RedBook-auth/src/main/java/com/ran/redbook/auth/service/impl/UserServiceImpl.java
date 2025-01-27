@@ -21,6 +21,7 @@ import com.ran.redbook.auth.domain.mapper.UserDOMapper;
 import com.ran.redbook.auth.domain.mapper.UserRoleDOMapper;
 import com.ran.redbook.auth.enums.LoginTypeEnum;
 import com.ran.redbook.auth.enums.ResponseCodeEnum;
+import com.ran.redbook.auth.model.vo.user.UpdatePasswordReqVO;
 import com.ran.redbook.auth.model.vo.user.UserLoginReqVO;
 import com.ran.redbook.auth.service.UserService;
 import jakarta.annotation.Resource;
@@ -28,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.support.TransactionTemplate;
@@ -54,6 +56,8 @@ public class UserServiceImpl implements UserService {
     private TransactionTemplate transactionTemplate;
     @Resource(name = "taskExecutor")
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
+    @Resource
+    private PasswordEncoder passwordEncoder;
 
     /**
      * 登录与注册
@@ -129,29 +133,37 @@ public class UserServiceImpl implements UserService {
     public Response<?> logout() {
         Long userId = LoginUserContextHolder.getUserId();
 
-        log.info("==> 用户退出登录, userId: {}", userId);
-
-        threadPoolTaskExecutor.submit(() -> {
-            Long userId2 = LoginUserContextHolder.getUserId();
-            log.info("==> 异步线程中获取 userId: {}", userId2);
-        });
-
         // 退出登录 (指定用户 ID)
         StpUtil.logout(userId);
 
         return Response.success();
     }
 
-    public static void main(String[] args) {
-        ThreadLocal<Long> threadLocal = new InheritableThreadLocal<>();
-        // 假设 用户 ID
-        Long userId = 1L;
-        threadLocal.set(userId);
-        System.out.println("主线程打印用户 ID: " + threadLocal.get());
+    /**
+     * 修改密码
+     *
+     * @param updatePasswordReqVO
+     * @return
+     */
+    @Override
+    public Response<?> updatePassword(UpdatePasswordReqVO updatePasswordReqVO) {
+        // 新密码
+        String newPassword = updatePasswordReqVO.getNewPassword();
+        // 密码加密
+        String encodePassword = passwordEncoder.encode(newPassword);
 
-        new Thread(() -> {
-            System.out.println("异步线程打印用户 ID: " + threadLocal.get());
-        }).start();
+        // 获取当前请求对应的用户 ID
+        Long userId = LoginUserContextHolder.getUserId();
+
+        UserDO userDO = UserDO.builder()
+                .id(userId)
+                .password(encodePassword)
+                .updateTime(LocalDateTime.now())
+                .build();
+        // 更新密码
+        userDOMapper.updateByPrimaryKeySelective(userDO);
+
+        return Response.success();
     }
 
     /**
@@ -208,6 +220,7 @@ public class UserServiceImpl implements UserService {
             }
         });
     }
+
 
 }
 

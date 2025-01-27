@@ -1,6 +1,7 @@
 package com.ran.redbook.auth.service;
 
 import com.RedBook.framework.common.response.Response;
+import com.ran.redbook.auth.model.vo.user.UpdatePasswordReqVO;
 import com.ran.redbook.auth.model.vo.user.UserLoginReqVO;
 
 public interface UserService {
@@ -17,4 +18,11 @@ public interface UserService {
      * @return
      */
     Response<?> logout();
+
+    /**
+     * 修改密码
+     * @param updatePasswordReqVO
+     * @return
+     */
+    Response<?> updatePassword(UpdatePasswordReqVO updatePasswordReqVO);
 }

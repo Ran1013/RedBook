@@ -2,6 +2,7 @@ package com.ran.redbook.auth.controller;
 
 import com.RedBook.framework.biz.operationlog.aspect.ApiOperationLog;
 import com.RedBook.framework.common.response.Response;
+import com.ran.redbook.auth.model.vo.user.UpdatePasswordReqVO;
 import com.ran.redbook.auth.model.vo.user.UserLoginReqVO;
 import com.ran.redbook.auth.service.UserService;
 import jakarta.annotation.Resource;
@@ -28,5 +29,12 @@ public class UserController {
     public Response<?> logout() {
         return userService.logout();
     }
+
+    @PostMapping("/password/update")
+    @ApiOperationLog(description = "修改密码")
+    public Response<?> updatePassword(@Validated @RequestBody UpdatePasswordReqVO updatePasswordReqVO) {
+        return userService.updatePassword(updatePasswordReqVO);
+    }
+
 
 }
