@@ -1,5 +1,6 @@
-package com.ran.redbook.auth.filter;
+package com.RedBook.framework.biz.context.holder;
 
+import com.alibaba.ttl.TransmittableThreadLocal;
 import com.RedBook.framework.common.constant.GlobalConstants;
 
 import java.util.HashMap;
@@ -13,8 +14,7 @@ public class LoginUserContextHolder {
 
     // 初始化一个 ThreadLocal 变量
     private static final ThreadLocal<Map<String, Object>> LOGIN_USER_CONTEXT_THREAD_LOCAL
-            = ThreadLocal.withInitial(HashMap::new);
-
+            = TransmittableThreadLocal.withInitial(HashMap::new);
 
     /**
      * 设置用户 ID

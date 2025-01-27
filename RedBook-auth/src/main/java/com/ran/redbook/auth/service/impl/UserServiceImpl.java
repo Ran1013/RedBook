@@ -2,8 +2,9 @@ package com.ran.redbook.auth.service.impl;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
+import com.RedBook.framework.biz.context.holder.LoginUserContextHolder;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
+
 import com.RedBook.framework.common.enums.DeletedEnum;
 import com.RedBook.framework.common.enums.StatusEnum;
 import com.RedBook.framework.common.exception.BizException;
@@ -11,7 +12,7 @@ import com.RedBook.framework.common.response.Response;
 import com.RedBook.framework.common.util.JsonUtils;
 import com.ran.redbook.auth.constant.RedisKeyConstants;
 import com.ran.redbook.auth.constant.RoleConstants;
-import com.ran.redbook.auth.domain.dataobject.PermissionDO;
+
 import com.ran.redbook.auth.domain.dataobject.RoleDO;
 import com.ran.redbook.auth.domain.dataobject.UserDO;
 import com.ran.redbook.auth.domain.dataobject.UserRoleDO;
@@ -20,18 +21,15 @@ import com.ran.redbook.auth.domain.mapper.UserDOMapper;
 import com.ran.redbook.auth.domain.mapper.UserRoleDOMapper;
 import com.ran.redbook.auth.enums.LoginTypeEnum;
 import com.ran.redbook.auth.enums.ResponseCodeEnum;
-import com.ran.redbook.auth.filter.LoginUserContextHolder;
 import com.ran.redbook.auth.model.vo.user.UserLoginReqVO;
 import com.ran.redbook.auth.service.UserService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
+
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.time.LocalDateTime;
@@ -47,13 +45,15 @@ public class UserServiceImpl implements UserService {
     @Resource
     private UserDOMapper userDOMapper;
     @Resource
+    private RoleDOMapper roleDOMapper;
+    @Resource
     private UserRoleDOMapper userRoleDOMapper;
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
     @Resource
     private TransactionTemplate transactionTemplate;
-    @Resource
-    private RoleDOMapper roleDOMapper;
+    @Resource(name = "taskExecutor")
+    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     /**
      * 登录与注册
@@ -121,8 +121,41 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 系统自动注册用户
+     * 退出登录
      *
+     * @return
+     */
+    @Override
+    public Response<?> logout() {
+        Long userId = LoginUserContextHolder.getUserId();
+
+        log.info("==> 用户退出登录, userId: {}", userId);
+
+        threadPoolTaskExecutor.submit(() -> {
+            Long userId2 = LoginUserContextHolder.getUserId();
+            log.info("==> 异步线程中获取 userId: {}", userId2);
+        });
+
+        // 退出登录 (指定用户 ID)
+        StpUtil.logout(userId);
+
+        return Response.success();
+    }
+
+    public static void main(String[] args) {
+        ThreadLocal<Long> threadLocal = new InheritableThreadLocal<>();
+        // 假设 用户 ID
+        Long userId = 1L;
+        threadLocal.set(userId);
+        System.out.println("主线程打印用户 ID: " + threadLocal.get());
+
+        new Thread(() -> {
+            System.out.println("异步线程打印用户 ID: " + threadLocal.get());
+        }).start();
+    }
+
+    /**
+     * 系统自动注册用户
      * @param phone
      * @return
      */
@@ -160,7 +193,7 @@ public class UserServiceImpl implements UserService {
 
                 RoleDO roleDO = roleDOMapper.selectByPrimaryKey(RoleConstants.COMMON_USER_ROLE_ID);
 
-                // 将该用户的角色 ID 存入 Redis 中，指定初始容量为 1，这样可以减少在扩容时的性能开销
+                // 将该用户的角色 ID 存入 Redis 中
                 List<String> roles = new ArrayList<>(1);
                 roles.add(roleDO.getRoleKey());
 
@@ -176,21 +209,5 @@ public class UserServiceImpl implements UserService {
         });
     }
 
-
-    /**
-     * 退出登录
-     * @return
-     */
-    @Override
-    public Response<?> logout() {
-        Long userId = LoginUserContextHolder.getUserId();
-
-        log.info("==> 用户退出登录, userId: {}", userId);
-
-        // 退出登录 (指定用户 ID)
-        StpUtil.logout(userId);
-
-        return Response.success();
-    }
-
 }
+
