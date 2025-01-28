@@ -24,6 +24,8 @@
         <module>RedBook-auth</module>
         <!-- Gateway 网关服务 -->
         <module>RedBook-gateway</module>
+        <!-- 对象存储服务 -->
+        <module>RedBook-oss</module>
     </modules>
 
     <properties>
