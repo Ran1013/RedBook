@@ -1,0 +1,25 @@
+package com.ran.redbook.oss.biz.service.impl;
+
+import com.RedBook.framework.common.response.Response;
+import com.ran.redbook.oss.biz.service.FileService;
+import com.ran.redbook.oss.biz.strategy.FileStrategy;
+import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+@Service
+@Slf4j
+public class FileServiceImpl implements FileService {
+
+    @Resource
+    private FileStrategy fileStrategy;
+
+    @Override
+    public Response<?> uploadFile(MultipartFile file) {
+        // 上传文件到
+        fileStrategy.uploadFile(file, "redbook");
+
+        return Response.success();
+    }
+}
