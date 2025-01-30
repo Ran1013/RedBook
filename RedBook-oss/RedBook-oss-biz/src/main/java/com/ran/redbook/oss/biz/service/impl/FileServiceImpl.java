@@ -15,11 +15,13 @@ public class FileServiceImpl implements FileService {
     @Resource
     private FileStrategy fileStrategy;
 
+    private static final String BUCKET_NAME = "redbook";
+
     @Override
     public Response<?> uploadFile(MultipartFile file) {
-        // 上传文件到
-        fileStrategy.uploadFile(file, "redbook");
+        // 上传文件
+        String url = fileStrategy.uploadFile(file, BUCKET_NAME);
 
-        return Response.success();
+        return Response.success(url);
     }
 }
