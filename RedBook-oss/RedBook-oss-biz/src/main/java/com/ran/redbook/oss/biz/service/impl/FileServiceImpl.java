@@ -15,7 +15,7 @@ public class FileServiceImpl implements FileService {
     @Resource
     private FileStrategy fileStrategy;
 
-    private static final String BUCKET_NAME = "redbook";
+    private static final String BUCKET_NAME = "redbook-ran";
 
     @Override
     public Response<?> uploadFile(MultipartFile file) {

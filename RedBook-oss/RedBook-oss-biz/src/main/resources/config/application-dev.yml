@@ -1,7 +1,12 @@
 #=================================================================
 # minio (上传图片需要，需配置成自己的地址)
 #=================================================================
-minio:
-  endpoint: http://127.0.0.1:9000
-  accessKey: minioadmin # minio access key
-  secretKey: minioadmin
+storage:
+  minio:
+    endpoint: http://127.0.0.1:9000
+    accessKey: minioadmin # minio access key
+    secretKey: minioadmin
+  aliyun-oss:
+    endpoint: oss-cn-beijing.aliyuncs.com
+    accessKey: your-oss-access-key-id
+    secretKey: your-oss-secret-key
