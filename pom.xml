@@ -26,6 +26,8 @@
         <module>RedBook-gateway</module>
         <!-- 对象存储服务 -->
         <module>RedBook-oss</module>
+        <!-- 用户服务 -->
+        <module>RedBook-user</module>
     </modules>
 
     <properties>
