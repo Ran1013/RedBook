@@ -2,7 +2,6 @@ package com.ran.redbook.user.biz.exception;
 
 import com.RedBook.framework.common.exception.BizException;
 import com.RedBook.framework.common.response.Response;
-
 import com.ran.redbook.user.biz.enums.ResponseCodeEnum;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;

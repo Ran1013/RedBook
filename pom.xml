@@ -90,6 +90,12 @@
                 <version>${revision}</version>
             </dependency>
 
+            <!-- 上下文组件 -->
+            <dependency>
+                <groupId>com.RedBook</groupId>
+                <artifactId>RedBook-spring-boot-starter-biz-context</artifactId>
+                <version>${revision}</version>
+            </dependency>
 
             <!-- Spring Boot 官方依赖管理 -->
             <dependency>
@@ -211,12 +217,14 @@
                 <artifactId>nacos-config-spring-boot-starter</artifactId>
                 <version>${nacos-config.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>transmittable-thread-local</artifactId>
                 <version>${transmittable-thread-local.version}</version>
             </dependency>
 
+            <!-- 对象存储 Minio -->
             <dependency>
                 <groupId>io.minio</groupId>
                 <artifactId>minio</artifactId>
