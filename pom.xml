@@ -97,6 +97,12 @@
                 <version>${revision}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.RedBook</groupId>
+                <artifactId>RedBook-oss-api</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
             <!-- Spring Boot 官方依赖管理 -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>

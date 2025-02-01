@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.RedBook.framework.biz.context.holder.LoginUserContextHolder;
 import com.RedBook.framework.common.response.Response;
 import com.RedBook.framework.common.util.ParamUtils;
+import com.ran.redbook.oss.api.FileFeignApi;
 import com.ran.redbook.user.biz.domain.dataobject.UserDO;
 import com.ran.redbook.user.biz.domain.mapper.UserDOMapper;
 import com.ran.redbook.user.biz.enums.ResponseCodeEnum;
@@ -29,6 +30,8 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private UserDOMapper userDOMapper;
+    @Resource
+    private FileFeignApi fileFeignApi;
 
     /**
      * 更新用户信息
@@ -49,6 +52,7 @@ public class UserServiceImpl implements UserService {
 
         if (Objects.nonNull(avatarFile)) {
             // todo: 调用对象存储服务上传文件
+            fileFeignApi.test();
         }
 
         // 昵称
