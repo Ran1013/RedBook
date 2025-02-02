@@ -1,1 +1,2 @@
 com.RedBook.framework.biz.context.config.ContextAutoConfiguration
+com.RedBook.framework.biz.context.config.FeignContextAutoConfiguration
