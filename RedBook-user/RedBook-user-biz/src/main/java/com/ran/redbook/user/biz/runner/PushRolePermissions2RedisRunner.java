@@ -1,10 +1,9 @@
 package com.ran.redbook.user.biz.runner;
 
 import cn.hutool.core.collection.CollUtil;
-import com.RedBook.framework.common.util.JsonUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
+import com.RedBook.framework.common.util.JsonUtils;
 import com.ran.redbook.user.biz.constant.RedisKeyConstants;
 import com.ran.redbook.user.biz.domain.dataobject.PermissionDO;
 import com.ran.redbook.user.biz.domain.dataobject.RoleDO;
@@ -24,7 +23,9 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-
+/**
+ * 推送角色权限数据到 Redis 中
+ **/
 @Component
 @Slf4j
 public class PushRolePermissions2RedisRunner implements ApplicationRunner {

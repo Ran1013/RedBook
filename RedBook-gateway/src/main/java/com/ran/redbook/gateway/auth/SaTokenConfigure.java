@@ -20,6 +20,7 @@ import static cn.dev33.satoken.SaManager.log;
  * [Sa-Token 权限认证] 配置类
  **/
 @Configuration
+@Slf4j
 public class SaTokenConfigure {
     // 注册 Sa-Token全局过滤器
     @Bean

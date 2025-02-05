@@ -1,5 +1,8 @@
 package com.ran.redbook.user.biz.constant;
 
+/**
+ * 角色全局常量
+ */
 public class RoleConstants {
 
 

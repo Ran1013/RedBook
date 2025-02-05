@@ -13,14 +13,15 @@ public interface RoleDOMapper {
 
     RoleDO selectByPrimaryKey(Long id);
 
-    int updateByPrimaryKeySelective(RoleDO record);
-
-    int updateByPrimaryKey(RoleDO record);
-
     /**
      * 查询所有被启用的角色
      *
      * @return
      */
     List<RoleDO> selectEnabledList();
+
+    int updateByPrimaryKeySelective(RoleDO record);
+
+    int updateByPrimaryKey(RoleDO record);
+
 }
