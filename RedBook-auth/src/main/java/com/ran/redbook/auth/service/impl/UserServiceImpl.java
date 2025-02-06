@@ -25,6 +25,7 @@ import com.ran.redbook.auth.model.vo.user.UpdatePasswordReqVO;
 import com.ran.redbook.auth.model.vo.user.UserLoginReqVO;
 import com.ran.redbook.auth.rpc.UserRpcService;
 import com.ran.redbook.auth.service.UserService;
+import com.ran.redbook.user.dto.resp.FindUserByPhoneRspDTO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -112,16 +113,17 @@ public class UserServiceImpl implements UserService {
                 break;
             case PASSWORD: // 密码登录
                 String password = userLoginReqVO.getPassword();
-                // 根据手机号查询
-                UserDO userDO1 = userDOMapper.selectByPhone(phone);
+
+                // RPC: 调用用户服务，通过手机号查询用户
+                FindUserByPhoneRspDTO findUserByPhoneRspDTO = userRpcService.findUserByPhone(phone);
 
                 // 判断该手机号是否注册
-                if (Objects.isNull(userDO1)) {
+                if (Objects.isNull(findUserByPhoneRspDTO)) {
                     throw new BizException(ResponseCodeEnum.USER_NOT_FOUND);
                 }
 
                 // 拿到密文密码
-                String encodePassword = userDO1.getPassword();
+                String encodePassword = findUserByPhoneRspDTO.getPassword();
 
                 // 匹配密码是否一致
                 boolean isPasswordCorrect = passwordEncoder.matches(password, encodePassword);
@@ -131,9 +133,7 @@ public class UserServiceImpl implements UserService {
                     throw new BizException(ResponseCodeEnum.PHONE_OR_PASSWORD_ERROR);
                 }
 
-                userId = userDO1.getId();
-                break;
-            default:
+                userId = findUserByPhoneRspDTO.getId();
                 break;
         }
 

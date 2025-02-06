@@ -22,7 +22,9 @@ import com.ran.redbook.user.biz.enums.SexEnum;
 import com.ran.redbook.user.biz.model.vo.UpdateUserInfoReqVO;
 import com.ran.redbook.user.biz.rpc.OssRpcService;
 import com.ran.redbook.user.biz.service.UserService;
+import com.ran.redbook.user.dto.req.FindUserByPhoneReqDTO;
 import com.ran.redbook.user.dto.req.RegisterUserReqDTO;
+import com.ran.redbook.user.dto.resp.FindUserByPhoneRspDTO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -210,4 +212,32 @@ public class UserServiceImpl implements UserService {
 
         return Response.success(userId);
     }
+
+    /**
+     * 根据手机号查询用户信息
+     *
+     * @param findUserByPhoneReqDTO
+     * @return
+     */
+    @Override
+    public Response<FindUserByPhoneRspDTO> findByPhone(FindUserByPhoneReqDTO findUserByPhoneReqDTO) {
+        String phone = findUserByPhoneReqDTO.getPhone();
+
+        // 根据手机号查询用户信息
+        UserDO userDO = userDOMapper.selectByPhone(phone);
+
+        // 判空
+        if (Objects.isNull(userDO)) {
+            throw new BizException(ResponseCodeEnum.USER_NOT_FOUND);
+        }
+
+        // 构建返参
+        FindUserByPhoneRspDTO findUserByPhoneRspDTO = FindUserByPhoneRspDTO.builder()
+                .id(userDO.getId())
+                .password(userDO.getPassword())
+                .build();
+
+        return Response.success(findUserByPhoneRspDTO);
+    }
+
 }
