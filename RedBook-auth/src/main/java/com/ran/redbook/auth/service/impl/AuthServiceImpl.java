@@ -6,25 +6,16 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.RedBook.framework.biz.context.holder.LoginUserContextHolder;
 import com.google.common.base.Preconditions;
 
-import com.RedBook.framework.common.enums.DeletedEnum;
-import com.RedBook.framework.common.enums.StatusEnum;
 import com.RedBook.framework.common.exception.BizException;
 import com.RedBook.framework.common.response.Response;
-import com.RedBook.framework.common.util.JsonUtils;
 import com.ran.redbook.auth.constant.RedisKeyConstants;
 
-import com.ran.redbook.auth.domain.dataobject.RoleDO;
-import com.ran.redbook.auth.domain.dataobject.UserDO;
-import com.ran.redbook.auth.domain.dataobject.UserRoleDO;
-import com.ran.redbook.auth.domain.mapper.RoleDOMapper;
-import com.ran.redbook.auth.domain.mapper.UserDOMapper;
-import com.ran.redbook.auth.domain.mapper.UserRoleDOMapper;
 import com.ran.redbook.auth.enums.LoginTypeEnum;
 import com.ran.redbook.auth.enums.ResponseCodeEnum;
 import com.ran.redbook.auth.model.vo.user.UpdatePasswordReqVO;
 import com.ran.redbook.auth.model.vo.user.UserLoginReqVO;
 import com.ran.redbook.auth.rpc.UserRpcService;
-import com.ran.redbook.auth.service.UserService;
+import com.ran.redbook.auth.service.AuthService;
 import com.ran.redbook.user.dto.resp.FindUserByPhoneRspDTO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -36,32 +27,22 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.support.TransactionTemplate;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 
 @Service
 @Slf4j
-public class UserServiceImpl implements UserService {
+public class AuthServiceImpl implements AuthService {
 
     @Resource
-    private UserDOMapper userDOMapper;
-    @Resource
-    private RoleDOMapper roleDOMapper;
-    @Resource
-    private UserRoleDOMapper userRoleDOMapper;
-    @Resource
     private RedisTemplate<String, Object> redisTemplate;
-    @Resource
-    private TransactionTemplate transactionTemplate;
     @Resource(name = "taskExecutor")
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
     @Resource
     private PasswordEncoder passwordEncoder;
     @Resource
     private UserRpcService userRpcService;
+
 
     /**
      * 登录与注册
@@ -175,16 +156,8 @@ public class UserServiceImpl implements UserService {
         // 密码加密
         String encodePassword = passwordEncoder.encode(newPassword);
 
-        // 获取当前请求对应的用户 ID
-        Long userId = LoginUserContextHolder.getUserId();
-
-        UserDO userDO = UserDO.builder()
-                .id(userId)
-                .password(encodePassword)
-                .updateTime(LocalDateTime.now())
-                .build();
-        // 更新密码
-        userDOMapper.updateByPrimaryKeySelective(userDO);
+        // RPC: 调用用户服务：更新密码
+        userRpcService.updatePassword(encodePassword);
 
         return Response.success();
     }

@@ -4,7 +4,7 @@ import com.RedBook.framework.common.response.Response;
 import com.ran.redbook.auth.model.vo.user.UpdatePasswordReqVO;
 import com.ran.redbook.auth.model.vo.user.UserLoginReqVO;
 
-public interface UserService {
+public interface AuthService {
 
     /**
      * 登录与注册

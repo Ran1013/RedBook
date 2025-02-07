@@ -4,6 +4,7 @@ import com.RedBook.framework.common.response.Response;
 import com.ran.redbook.user.api.UserFeignApi;
 import com.ran.redbook.user.dto.req.FindUserByPhoneReqDTO;
 import com.ran.redbook.user.dto.req.RegisterUserReqDTO;
+import com.ran.redbook.user.dto.req.UpdateUserPasswordReqDTO;
 import com.ran.redbook.user.dto.resp.FindUserByPhoneRspDTO;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
@@ -49,5 +50,16 @@ public class UserRpcService {
         }
 
         return response.getData();
+    }
+    /**
+     * 密码更新
+     *
+     * @param encodePassword
+     */
+    public void updatePassword(String encodePassword) {
+        UpdateUserPasswordReqDTO updateUserPasswordReqDTO = new UpdateUserPasswordReqDTO();
+        updateUserPasswordReqDTO.setEncodePassword(encodePassword);
+
+        userFeignApi.updatePassword(updateUserPasswordReqDTO);
     }
 }
