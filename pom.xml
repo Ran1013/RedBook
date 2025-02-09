@@ -28,6 +28,8 @@
         <module>RedBook-oss</module>
         <!-- 用户服务 -->
         <module>RedBook-user</module>
+        <!-- KV 键值存储服务 -->
+        <module>RedBook-kv</module>
     </modules>
 
     <properties>
