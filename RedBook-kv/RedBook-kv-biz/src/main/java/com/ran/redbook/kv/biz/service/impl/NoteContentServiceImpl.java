@@ -1,14 +1,19 @@
 package com.ran.redbook.kv.biz.service.impl;
 
+import com.RedBook.framework.common.exception.BizException;
 import com.RedBook.framework.common.response.Response;
 import com.ran.redbook.kv.biz.domain.dataobject.NoteContentDO;
 import com.ran.redbook.kv.biz.domain.repository.NoteContentRepository;
+import com.ran.redbook.kv.biz.enums.ResponseCodeEnum;
 import com.ran.redbook.kv.biz.service.NoteContentService;
 import com.ran.redbook.kv.dto.req.AddNoteContentReqDTO;
+import com.ran.redbook.kv.dto.req.FindNoteContentReqDTO;
+import com.ran.redbook.kv.dto.rsp.FindNoteContentRspDTO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -39,5 +44,33 @@ public class NoteContentServiceImpl implements NoteContentService {
         noteContentRepository.save(nodeContent);
 
         return Response.success();
+    }
+
+    /**
+     * 查询笔记内容
+     *
+     * @param findNoteContentReqDTO
+     * @return
+     */
+    @Override
+    public Response<FindNoteContentRspDTO> findNoteContent(FindNoteContentReqDTO findNoteContentReqDTO) {
+        // 笔记 ID
+        String noteId = findNoteContentReqDTO.getNoteId();
+        // 根据笔记 ID 查询笔记内容
+        Optional<NoteContentDO> optional = noteContentRepository.findById(UUID.fromString(noteId));
+
+        // 若笔记内容不存在
+        if (!optional.isPresent()) {
+            throw new BizException(ResponseCodeEnum.NOTE_CONTENT_NOT_FOUND);
+        }
+
+        NoteContentDO noteContentDO = optional.get();
+        // 构建返参 DTO
+        FindNoteContentRspDTO findNoteContentRspDTO = FindNoteContentRspDTO.builder()
+                .noteId(noteContentDO.getId())
+                .content(noteContentDO.getContent())
+                .build();
+
+        return Response.success(findNoteContentRspDTO);
     }
 }
