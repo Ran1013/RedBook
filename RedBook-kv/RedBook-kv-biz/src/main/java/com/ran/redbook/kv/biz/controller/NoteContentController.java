@@ -3,6 +3,7 @@ package com.ran.redbook.kv.biz.controller;
 import com.RedBook.framework.common.response.Response;
 import com.ran.redbook.kv.biz.service.NoteContentService;
 import com.ran.redbook.kv.dto.req.AddNoteContentReqDTO;
+import com.ran.redbook.kv.dto.req.DeleteNoteContentReqDTO;
 import com.ran.redbook.kv.dto.req.FindNoteContentReqDTO;
 import com.ran.redbook.kv.dto.rsp.FindNoteContentRspDTO;
 import jakarta.annotation.Resource;
@@ -31,6 +32,10 @@ public class NoteContentController {
     @PostMapping(value = "/note/content/find")
     public Response<FindNoteContentRspDTO> findNoteContent(@Validated @RequestBody FindNoteContentReqDTO findNoteContentReqDTO) {
         return noteContentService.findNoteContent(findNoteContentReqDTO);
+    }
+    @PostMapping(value = "/note/content/delete")
+    public Response<?> deleteNoteContent(@Validated @RequestBody DeleteNoteContentReqDTO deleteNoteContentReqDTO) {
+        return noteContentService.deleteNoteContent(deleteNoteContentReqDTO);
     }
 
 }

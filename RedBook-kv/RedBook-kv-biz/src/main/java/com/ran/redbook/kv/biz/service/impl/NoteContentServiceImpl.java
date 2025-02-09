@@ -7,6 +7,7 @@ import com.ran.redbook.kv.biz.domain.repository.NoteContentRepository;
 import com.ran.redbook.kv.biz.enums.ResponseCodeEnum;
 import com.ran.redbook.kv.biz.service.NoteContentService;
 import com.ran.redbook.kv.dto.req.AddNoteContentReqDTO;
+import com.ran.redbook.kv.dto.req.DeleteNoteContentReqDTO;
 import com.ran.redbook.kv.dto.req.FindNoteContentReqDTO;
 import com.ran.redbook.kv.dto.rsp.FindNoteContentRspDTO;
 import jakarta.annotation.Resource;
@@ -72,5 +73,21 @@ public class NoteContentServiceImpl implements NoteContentService {
                 .build();
 
         return Response.success(findNoteContentRspDTO);
+    }
+
+    /**
+     * 删除笔记内容
+     *
+     * @param deleteNoteContentReqDTO
+     * @return
+     */
+    @Override
+    public Response<?> deleteNoteContent(DeleteNoteContentReqDTO deleteNoteContentReqDTO) {
+        // 笔记 ID
+        String noteId = deleteNoteContentReqDTO.getNoteId();
+        // 删除笔记内容
+        noteContentRepository.deleteById(UUID.fromString(noteId));
+
+        return Response.success();
     }
 }
