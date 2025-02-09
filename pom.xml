@@ -112,6 +112,12 @@
                 <version>${revision}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.RedBook</groupId>
+                <artifactId>RedBook-kv-api</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
             <!-- Spring Boot 官方依赖管理 -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -332,6 +338,8 @@
                             <artifactId>mysql-connector-java</artifactId>
                             <version>${mysql-connector-java.version}</version>
                         </dependency>
+
+
                     </dependencies>
                 </plugin>
             </plugins>

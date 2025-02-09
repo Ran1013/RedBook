@@ -13,16 +13,17 @@
     <!-- 多模块项目需要配置打包方式为 pom -->
     <packaging>pom</packaging>
 
-    <!-- 子模块管理 -->
-    <modules>
-        <module>RedBook-kv-api</module>
-        <module>RedBook-kv-biz</module>
-    </modules>
-
     <artifactId>RedBook-kv</artifactId>
     <!-- 项目名称 -->
     <name>${project.artifactId}</name>
     <!-- 项目描述 -->
     <description>Key-Value 键值存储服务</description>
+
+
+    <!-- 子模块管理 -->
+    <modules>
+        <module>RedBook-kv-api</module>
+        <module>RedBook-kv-biz</module>
+    </modules>
 
 </project>
