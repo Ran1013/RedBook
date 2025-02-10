@@ -30,6 +30,7 @@
         <module>RedBook-user</module>
         <!-- KV 键值存储服务 -->
         <module>RedBook-kv</module>
+        <module>RedBook-distributed-id-generator</module>
     </modules>
 
     <properties>

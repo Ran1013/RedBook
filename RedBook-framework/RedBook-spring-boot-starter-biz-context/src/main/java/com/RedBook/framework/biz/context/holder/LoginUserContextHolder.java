@@ -1,7 +1,7 @@
 package com.RedBook.framework.biz.context.holder;
 
-import com.alibaba.ttl.TransmittableThreadLocal;
 import com.RedBook.framework.common.constant.GlobalConstants;
+import com.alibaba.ttl.TransmittableThreadLocal;
 
 import java.util.HashMap;
 import java.util.Map;
