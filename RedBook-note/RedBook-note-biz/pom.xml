@@ -40,6 +40,16 @@
         </dependency>
 
         <dependency>
+            <groupId>com.RedBook</groupId>
+            <artifactId>RedBook-distributed-id-generator-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.RedBook</groupId>
+            <artifactId>RedBook-kv-api</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
