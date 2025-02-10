@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
         // 昵称
         String nickname = updateUserInfoReqVO.getNickname();
         if (StringUtils.isNotBlank(nickname)) {
-            Preconditions.checkArgument(ParamUtils.checkNickname(nickname), ResponseCodeEnum.NICK_NAME_VALID_FAIL);
+            Preconditions.checkArgument(ParamUtils.checkNickname(nickname), ResponseCodeEnum.NICK_NAME_VALID_FAIL.getErrorMessage());
             userDO.setNickname(nickname);
             needUpdate = true;
         }
@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
         // 小红书号
         String redbookId = updateUserInfoReqVO.getRedbookId();
         if (StringUtils.isNotBlank(redbookId)) {
-            Preconditions.checkArgument(ParamUtils.checkRedBookId(redbookId), ResponseCodeEnum.REDBOOK_ID_VALID_FAIL);
+            Preconditions.checkArgument(ParamUtils.checkRedBookId(redbookId), ResponseCodeEnum.REDBOOK_ID_VALID_FAIL.getErrorMessage());
             userDO.setRedbookId(redbookId);
             needUpdate = true;
         }
@@ -109,7 +109,7 @@ public class UserServiceImpl implements UserService {
         // 性别
         Integer sex = updateUserInfoReqVO.getSex();
         if (Objects.nonNull(sex)) {
-            Preconditions.checkArgument(SexEnum.isValid(sex), ResponseCodeEnum.SEX_VALID_FAIL);
+            Preconditions.checkArgument(SexEnum.isValid(sex), ResponseCodeEnum.SEX_VALID_FAIL.getErrorMessage());
             userDO.setSex(sex);
             needUpdate = true;
         }
@@ -124,7 +124,7 @@ public class UserServiceImpl implements UserService {
         // 个人简介
         String introduction = updateUserInfoReqVO.getIntroduction();
         if (StringUtils.isNotBlank(introduction)) {
-            Preconditions.checkArgument(ParamUtils.checkLength(introduction, 100), ResponseCodeEnum.INTRODUCTION_VALID_FAIL);
+            Preconditions.checkArgument(ParamUtils.checkLength(introduction, 100), ResponseCodeEnum.INTRODUCTION_VALID_FAIL.getErrorMessage());
             userDO.setIntroduction(introduction);
             needUpdate = true;
         }
@@ -172,7 +172,7 @@ public class UserServiceImpl implements UserService {
             return Response.success(userDO1.getId());
         }
 
-// 否则注册新用户
+        // 否则注册新用户
         // RPC: 调用分布式 ID 生成服务生成小红书 ID
         String redbookId = distributedIdGeneratorRpcService.getRedbookId();
 
@@ -267,5 +267,4 @@ public class UserServiceImpl implements UserService {
 
         return Response.success();
     }
-
 }

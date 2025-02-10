@@ -18,3 +18,4 @@ public interface DistributedIdGeneratorFeignApi {
     String getSnowflakeId(@PathVariable("key") String key);
 
 }
+
