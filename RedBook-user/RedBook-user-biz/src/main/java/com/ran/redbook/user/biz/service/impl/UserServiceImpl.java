@@ -20,6 +20,7 @@ import com.ran.redbook.user.biz.domain.mapper.UserRoleDOMapper;
 import com.ran.redbook.user.biz.enums.ResponseCodeEnum;
 import com.ran.redbook.user.biz.enums.SexEnum;
 import com.ran.redbook.user.biz.model.vo.UpdateUserInfoReqVO;
+import com.ran.redbook.user.biz.rpc.DistributedIdGeneratorRpcService;
 import com.ran.redbook.user.biz.rpc.OssRpcService;
 import com.ran.redbook.user.biz.service.UserService;
 import com.ran.redbook.user.dto.req.FindUserByPhoneReqDTO;
@@ -41,10 +42,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @author: ran
- * @date: 2024/4/7 15:41
- * @version: v1.0.0
- * @description: 用户业务
+ * 用户业务
  **/
 @Service
 @Slf4j
@@ -60,6 +58,8 @@ public class UserServiceImpl implements UserService {
     private OssRpcService ossRpcService;
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
+    @Resource
+    private DistributedIdGeneratorRpcService distributedIdGeneratorRpcService;
 
     /**
      * 更新用户信息
@@ -172,13 +172,18 @@ public class UserServiceImpl implements UserService {
             return Response.success(userDO1.getId());
         }
 
-        // 否则注册新用户
-        // 获取全局自增的小哈书 ID
-        Long redbookId = redisTemplate.opsForValue().increment(RedisKeyConstants.REDBOOK_ID_GENERATOR_KEY);
+// 否则注册新用户
+        // RPC: 调用分布式 ID 生成服务生成小红书 ID
+        String redbookId = distributedIdGeneratorRpcService.getRedbookId();
+
+        // RPC: 调用分布式 ID 生成服务生成用户 ID
+        String userIdStr = distributedIdGeneratorRpcService.getUserId();
+        Long userId = Long.valueOf(userIdStr);
 
         UserDO userDO = UserDO.builder()
+                .id(userId)
                 .phone(phone)
-                .redbookId(String.valueOf(redbookId)) // 自动生成小红书号 ID
+                .redbookId(redbookId) // 自动生成小红书号 ID
                 .nickname("小红薯" + redbookId) // 自动生成昵称, 如：小红薯10000
                 .status(StatusEnum.ENABLE.getValue()) // 状态为启用
                 .createTime(LocalDateTime.now())
@@ -190,7 +195,7 @@ public class UserServiceImpl implements UserService {
         userDOMapper.insert(userDO);
 
         // 获取刚刚添加入库的用户 ID
-        Long userId = userDO.getId();
+        // Long userId = userDO.getId();
 
         // 给该用户分配一个默认角色
         UserRoleDO userRoleDO = UserRoleDO.builder()
@@ -240,6 +245,7 @@ public class UserServiceImpl implements UserService {
 
         return Response.success(findUserByPhoneRspDTO);
     }
+
     /**
      * 更新密码
      *
