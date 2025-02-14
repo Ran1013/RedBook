@@ -23,9 +23,11 @@ import com.ran.redbook.user.biz.model.vo.UpdateUserInfoReqVO;
 import com.ran.redbook.user.biz.rpc.DistributedIdGeneratorRpcService;
 import com.ran.redbook.user.biz.rpc.OssRpcService;
 import com.ran.redbook.user.biz.service.UserService;
+import com.ran.redbook.user.dto.req.FindUserByIdReqDTO;
 import com.ran.redbook.user.dto.req.FindUserByPhoneReqDTO;
 import com.ran.redbook.user.dto.req.RegisterUserReqDTO;
 import com.ran.redbook.user.dto.req.UpdateUserPasswordReqDTO;
+import com.ran.redbook.user.dto.resp.FindUserByIdRspDTO;
 import com.ran.redbook.user.dto.resp.FindUserByPhoneRspDTO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -266,5 +268,33 @@ public class UserServiceImpl implements UserService {
         userDOMapper.updateByPrimaryKeySelective(userDO);
 
         return Response.success();
+    }
+
+    /**
+     * 根据用户 ID 查询用户信息
+     *
+     * @param findUserByIdReqDTO
+     * @return
+     */
+    @Override
+    public Response<FindUserByIdRspDTO> findById(FindUserByIdReqDTO findUserByIdReqDTO) {
+        Long userId = findUserByIdReqDTO.getId();
+
+        // 根据用户 ID 查询用户信息
+        UserDO userDO = userDOMapper.selectByPrimaryKey(userId);
+
+        // 判空
+        if (Objects.isNull(userDO)) {
+            throw new BizException(ResponseCodeEnum.USER_NOT_FOUND);
+        }
+
+        // 构建返参
+        FindUserByIdRspDTO findUserByIdRspDTO = FindUserByIdRspDTO.builder()
+                .id(userDO.getId())
+                .nickName(userDO.getNickname())
+                .avatar(userDO.getAvatar())
+                .build();
+
+        return Response.success(findUserByIdRspDTO);
     }
 }
