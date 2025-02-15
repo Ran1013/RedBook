@@ -2,6 +2,8 @@ package com.ran.redbook.note.biz.service;
 
 
 import com.RedBook.framework.common.response.Response;
+import com.ran.redbook.note.biz.model.vo.FindNoteDetailReqVO;
+import com.ran.redbook.note.biz.model.vo.FindNoteDetailRspVO;
 import com.ran.redbook.note.biz.model.vo.PublishNoteReqVO;
 
 /**
@@ -17,4 +19,10 @@ public interface NoteService {
      */
     Response<?> publishNote(PublishNoteReqVO publishNoteReqVO);
 
+    /**
+     * 笔记详情
+     * @param findNoteDetailReqVO
+     * @return
+     */
+    Response<FindNoteDetailRspVO> findNoteDetail(FindNoteDetailReqVO findNoteDetailReqVO);
 }

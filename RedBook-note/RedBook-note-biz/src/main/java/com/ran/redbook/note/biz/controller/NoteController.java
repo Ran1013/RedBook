@@ -2,6 +2,8 @@ package com.ran.redbook.note.biz.controller;
 
 import com.RedBook.framework.biz.operationlog.aspect.ApiOperationLog;
 import com.RedBook.framework.common.response.Response;
+import com.ran.redbook.note.biz.model.vo.FindNoteDetailReqVO;
+import com.ran.redbook.note.biz.model.vo.FindNoteDetailRspVO;
 import com.ran.redbook.note.biz.model.vo.PublishNoteReqVO;
 import com.ran.redbook.note.biz.service.NoteService;
 import jakarta.annotation.Resource;
@@ -29,4 +31,9 @@ public class NoteController {
         return noteService.publishNote(publishNoteReqVO);
     }
 
+    @PostMapping(value = "/detail")
+    @ApiOperationLog(description = "笔记详情")
+    public Response<FindNoteDetailRspVO> findNoteDetail(@Validated @RequestBody FindNoteDetailReqVO findNoteDetailReqVO) {
+        return noteService.findNoteDetail(findNoteDetailReqVO);
+    }
 }
