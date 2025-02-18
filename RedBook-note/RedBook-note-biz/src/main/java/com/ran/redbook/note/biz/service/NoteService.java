@@ -2,10 +2,7 @@ package com.ran.redbook.note.biz.service;
 
 
 import com.RedBook.framework.common.response.Response;
-import com.ran.redbook.note.biz.model.vo.FindNoteDetailReqVO;
-import com.ran.redbook.note.biz.model.vo.FindNoteDetailRspVO;
-import com.ran.redbook.note.biz.model.vo.PublishNoteReqVO;
-import com.ran.redbook.note.biz.model.vo.UpdateNoteReqVO;
+import com.ran.redbook.note.biz.model.vo.*;
 
 /**
  * 笔记业务
@@ -39,4 +36,11 @@ public interface NoteService {
      * @param noteId
      */
     void deleteNoteLocalCache(Long noteId);
+
+    /**
+     * 删除笔记
+     * @param deleteNoteReqVO
+     * @return
+     */
+    Response<?> deleteNote(DeleteNoteReqVO deleteNoteReqVO);
 }
