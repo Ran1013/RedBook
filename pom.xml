@@ -32,6 +32,7 @@
         <module>RedBook-kv</module>
         <module>RedBook-distributed-id-generator</module>
         <module>RedBook-note</module>
+        <module>RedBook-user-relation</module>
     </modules>
 
     <properties>
