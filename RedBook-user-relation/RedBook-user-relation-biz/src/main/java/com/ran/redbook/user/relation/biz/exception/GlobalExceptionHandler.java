@@ -2,7 +2,7 @@ package com.ran.redbook.user.relation.biz.exception;
 
 import com.RedBook.framework.common.exception.BizException;
 import com.RedBook.framework.common.response.Response;
-import com.ran.redbook.user.relation.biz.emums.ResponseCodeEnum;
+import com.ran.redbook.user.relation.biz.enums.ResponseCodeEnum;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
