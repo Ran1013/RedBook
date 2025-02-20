@@ -2,13 +2,13 @@ package com.ran.redbook.note.biz.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.RandomUtil;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.google.common.base.Preconditions;
 import com.RedBook.framework.biz.context.holder.LoginUserContextHolder;
 import com.RedBook.framework.common.exception.BizException;
 import com.RedBook.framework.common.response.Response;
 import com.RedBook.framework.common.util.JsonUtils;
-import com.github.benmanes.caffeine.cache.Cache;
-import com.github.benmanes.caffeine.cache.Caffeine;
-import com.google.common.base.Preconditions;
 import com.ran.redbook.note.biz.constant.MQConstants;
 import com.ran.redbook.note.biz.constant.RedisKeyConstants;
 import com.ran.redbook.note.biz.domain.dataobject.NoteDO;
@@ -42,7 +42,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 笔记业务
+*笔记业务
  **/
 @Service
 @Slf4j
@@ -190,7 +190,6 @@ public class NoteServiceImpl implements NoteService {
      * @param findNoteDetailReqVO
      * @return
      */
-
     @Override
     @SneakyThrows
     public Response<FindNoteDetailRspVO> findNoteDetail(FindNoteDetailReqVO findNoteDetailReqVO) {
@@ -250,9 +249,8 @@ public class NoteServiceImpl implements NoteService {
 
         // 并发查询优化
         // RPC: 调用用户服务
-        Long creatorId = noteDO.getCreatorId();
         CompletableFuture<FindUserByIdRspDTO> userResultFuture = CompletableFuture
-                .supplyAsync(() -> userRpcService.findById(creatorId), threadPoolTaskExecutor);
+                .supplyAsync(() -> userRpcService.findById(userId), threadPoolTaskExecutor);
 
         // RPC: 调用 K-V 存储服务获取内容
         CompletableFuture<String> contentResultFuture = CompletableFuture.completedFuture(null);
@@ -290,7 +288,7 @@ public class NoteServiceImpl implements NoteService {
                             .imgUris(imgUris)
                             .topicId(noteDO.getTopicId())
                             .topicName(noteDO.getTopicName())
-                            .creatorId(noteDO.getCreatorId())
+                            .creatorId(userId)
                             .creatorName(findUserByIdRspDTO.getNickName())
                             .avatar(findUserByIdRspDTO.getAvatar())
                             .videoUri(noteDO.getVideoUri())
@@ -307,39 +305,11 @@ public class NoteServiceImpl implements NoteService {
         threadPoolTaskExecutor.submit(() -> {
             String noteDetailJson1 = JsonUtils.toJsonString(findNoteDetailRspVO);
             // 过期时间（保底1天 + 随机秒数，将缓存过期时间打散，防止同一时间大量缓存失效，导致数据库压力太大）
-            long expireSeconds = 60 * 60 * 24 + RandomUtil.randomInt(60 * 60 * 24);
+            long expireSeconds = 60*60*24 + RandomUtil.randomInt(60*60*24);
             redisTemplate.opsForValue().set(noteDetailRedisKey, noteDetailJson1, expireSeconds, TimeUnit.SECONDS);
         });
 
         return Response.success(findNoteDetailRspVO);
-    }
-
-
-    /**
-     * 校验笔记的可见性
-     *
-     * @param visible    是否可见
-     * @param currUserId 当前用户 ID
-     * @param creatorId  笔记创建者
-     */
-    private void checkNoteVisible(Integer visible, Long currUserId, Long creatorId) {
-        if (Objects.equals(visible, NoteVisibleEnum.PRIVATE.getCode())
-                && !Objects.equals(currUserId, creatorId)) { // 仅自己可见, 并且访问用户为笔记创建者
-            throw new BizException(ResponseCodeEnum.NOTE_PRIVATE);
-        }
-    }
-
-    /**
-     * 校验笔记的可见性（针对 VO 实体类）
-     *
-     * @param userId
-     * @param findNoteDetailRspVO
-     */
-    private void checkNoteVisibleFromVO(Long userId, FindNoteDetailRspVO findNoteDetailRspVO) {
-        if (Objects.nonNull(findNoteDetailRspVO)) {
-            Integer visible = findNoteDetailRspVO.getVisible();
-            checkNoteVisible(visible, userId, findNoteDetailRspVO.getCreatorId());
-        }
     }
 
     /**
@@ -385,6 +355,21 @@ public class NoteServiceImpl implements NoteService {
                 break;
         }
 
+
+        // 当前登录用户 ID
+        Long currUserId = LoginUserContextHolder.getUserId();
+        NoteDO selectNoteDO = noteDOMapper.selectByPrimaryKey(noteId);
+
+        // 笔记不存在
+        if (Objects.isNull(selectNoteDO)) {
+            throw new BizException(ResponseCodeEnum.NOTE_NOT_FOUND);
+        }
+
+        // 判断权限：非笔记发布者不允许更新笔记
+        if (!Objects.equals(currUserId, selectNoteDO.getCreatorId())) {
+            throw new BizException(ResponseCodeEnum.NOTE_CANT_OPERATE);
+        }
+
         // 话题
         Long topicId = updateNoteReqVO.getTopicId();
         String topicName = null;
@@ -416,9 +401,8 @@ public class NoteServiceImpl implements NoteService {
         String noteDetailRedisKey = RedisKeyConstants.buildNoteDetailKey(noteId);
         redisTemplate.delete(noteDetailRedisKey);
 
-//        // 删除本地缓存
-//        LOCAL_CACHE.invalidate(noteId);
-
+        // // 删除本地缓存
+        // LOCAL_CACHE.invalidate(noteId);
         // 同步发送广播模式 MQ，将所有实例中的本地缓存都删除掉
         rocketMQTemplate.syncSend(MQConstants.TOPIC_DELETE_NOTE_LOCAL_CACHE, noteId);
         log.info("====> MQ：删除笔记本地缓存发送成功...");
@@ -453,6 +437,7 @@ public class NoteServiceImpl implements NoteService {
     public void deleteNoteLocalCache(Long noteId) {
         LOCAL_CACHE.invalidate(noteId);
     }
+
     /**
      * 删除笔记
      *
@@ -465,6 +450,19 @@ public class NoteServiceImpl implements NoteService {
         // 笔记 ID
         Long noteId = deleteNoteReqVO.getId();
 
+        NoteDO selectNoteDO = noteDOMapper.selectByPrimaryKey(noteId);
+
+        // 判断笔记是否存在
+        if (Objects.isNull(selectNoteDO)) {
+            throw new BizException(ResponseCodeEnum.NOTE_NOT_FOUND);
+        }
+
+        // 判断权限：非笔记发布者不允许删除笔记
+        Long currUserId = LoginUserContextHolder.getUserId();
+        if (!Objects.equals(currUserId, selectNoteDO.getCreatorId())) {
+            throw new BizException(ResponseCodeEnum.NOTE_CANT_OPERATE);
+        }
+
         // 逻辑删除
         NoteDO noteDO = NoteDO.builder()
                 .id(noteId)
@@ -472,12 +470,7 @@ public class NoteServiceImpl implements NoteService {
                 .updateTime(LocalDateTime.now())
                 .build();
 
-        int count = noteDOMapper.updateByPrimaryKeySelective(noteDO);
-
-        // 若影响的行数为 0，则表示该笔记不存在
-        if (count == 0) {
-            throw new BizException(ResponseCodeEnum.NOTE_NOT_FOUND);
-        }
+        noteDOMapper.updateByPrimaryKeySelective(noteDO);
 
         // 删除缓存
         String noteDetailRedisKey = RedisKeyConstants.buildNoteDetailKey(noteId);
@@ -489,6 +482,7 @@ public class NoteServiceImpl implements NoteService {
 
         return Response.success();
     }
+
     /**
      * 笔记仅对自己可见
      *
@@ -499,6 +493,19 @@ public class NoteServiceImpl implements NoteService {
     public Response<?> visibleOnlyMe(UpdateNoteVisibleOnlyMeReqVO updateNoteVisibleOnlyMeReqVO) {
         // 笔记 ID
         Long noteId = updateNoteVisibleOnlyMeReqVO.getId();
+
+        NoteDO selectNoteDO = noteDOMapper.selectByPrimaryKey(noteId);
+
+        // 判断笔记是否存在
+        if (Objects.isNull(selectNoteDO)) {
+            throw new BizException(ResponseCodeEnum.NOTE_NOT_FOUND);
+        }
+
+        // 判断权限：非笔记发布者不允许修改笔记权限
+        Long currUserId = LoginUserContextHolder.getUserId();
+        if (!Objects.equals(currUserId, selectNoteDO.getCreatorId())) {
+            throw new BizException(ResponseCodeEnum.NOTE_CANT_OPERATE);
+        }
 
         // 构建更新 DO 实体类
         NoteDO noteDO = NoteDO.builder()
@@ -565,6 +572,31 @@ public class NoteServiceImpl implements NoteService {
         log.info("====> MQ：删除笔记本地缓存发送成功...");
 
         return Response.success();
+    }
+
+    /**
+     * 校验笔记的可见性
+     * @param visible 是否可见
+     * @param currUserId 当前用户 ID
+     * @param creatorId 笔记创建者
+     */
+    private void checkNoteVisible(Integer visible, Long currUserId, Long creatorId) {
+        if (Objects.equals(visible, NoteVisibleEnum.PRIVATE.getCode())
+                && !Objects.equals(currUserId, creatorId)) { // 仅自己可见, 并且访问用户为笔记创建者
+            throw new BizException(ResponseCodeEnum.NOTE_PRIVATE);
+        }
+    }
+
+    /**
+     * 校验笔记的可见性（针对 VO 实体类）
+     * @param userId
+     * @param findNoteDetailRspVO
+     */
+    private void checkNoteVisibleFromVO(Long userId, FindNoteDetailRspVO findNoteDetailRspVO) {
+        if (Objects.nonNull(findNoteDetailRspVO)) {
+            Integer visible = findNoteDetailRspVO.getVisible();
+            checkNoteVisible(visible, userId, findNoteDetailRspVO.getCreatorId());
+        }
     }
 
 
