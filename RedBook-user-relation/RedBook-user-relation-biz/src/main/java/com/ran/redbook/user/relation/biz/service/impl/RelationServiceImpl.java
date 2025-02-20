@@ -105,7 +105,7 @@ public class RelationServiceImpl implements RelationService {
 
             // 随机过期时间
             // 保底1天+随机秒数
-            long expireSeconds = 60 * 60 * 24 + RandomUtil.randomInt(60 * 60 * 24);
+            long expireSeconds = 60*60*24 + RandomUtil.randomInt(60*60*24);
 
             // 若记录为空，直接 ZADD 对象, 并设置过期时间
             if (CollUtil.isEmpty(followingDOS)) {
@@ -168,7 +168,6 @@ public class RelationServiceImpl implements RelationService {
 
     /**
      * 校验 Lua 脚本结果，根据状态码抛出对应的业务异常
-     *
      * @param result
      */
     private static void checkLuaScriptResult(Long result) {
