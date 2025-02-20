@@ -1,6 +1,7 @@
 package com.ran.redbook.user.relation.biz.consumer;
 
 import com.RedBook.framework.common.util.JsonUtils;
+import com.google.common.util.concurrent.RateLimiter;
 import com.ran.redbook.user.relation.biz.constant.MQConstants;
 import com.ran.redbook.user.relation.biz.domain.dataobject.FansDO;
 import com.ran.redbook.user.relation.biz.domain.dataobject.FollowingDO;
@@ -34,9 +35,14 @@ public class FollowUnfollowConsumer implements RocketMQListener<Message> {
     private FansDOMapper fansDOMapper;
     @Resource
     private TransactionTemplate transactionTemplate;
+    @Resource
+    private RateLimiter rateLimiter;
 
     @Override
     public void onMessage(Message message) {
+        // 流量削峰：通过获取令牌，如果没有令牌可用，将阻塞，直到获得
+        rateLimiter.acquire();
+
         // 消息体
         String bodyJsonStr = new String(message.getBody());
         // 标签
@@ -74,18 +80,20 @@ public class FollowUnfollowConsumer implements RocketMQListener<Message> {
             try {
                 // 关注成功需往数据库添加两条记录
                 // 关注表：一条记录
-                followingDOMapper.insert(FollowingDO.builder()
+                int count = followingDOMapper.insert(FollowingDO.builder()
                         .userId(userId)
                         .followingUserId(followUserId)
                         .createTime(createTime)
                         .build());
 
                 // 粉丝表：一条记录
-                fansDOMapper.insert(FansDO.builder()
-                        .userId(followUserId)
-                        .fansUserId(userId)
-                        .createTime(createTime)
-                        .build());
+                if (count > 0) {
+                    fansDOMapper.insert(FansDO.builder()
+                            .userId(followUserId)
+                            .fansUserId(userId)
+                            .createTime(createTime)
+                            .build());
+                }
                 return true;
             } catch (Exception ex) {
                 status.setRollbackOnly(); // 标记事务为回滚
