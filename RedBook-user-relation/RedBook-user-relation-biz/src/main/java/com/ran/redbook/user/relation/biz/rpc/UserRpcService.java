@@ -1,12 +1,15 @@
 package com.ran.redbook.user.relation.biz.rpc;
 
+import cn.hutool.core.collection.CollUtil;
 import com.RedBook.framework.common.response.Response;
 import com.ran.redbook.user.api.UserFeignApi;
 import com.ran.redbook.user.dto.req.FindUserByIdReqDTO;
+import com.ran.redbook.user.dto.req.FindUsersByIdsReqDTO;
 import com.ran.redbook.user.dto.resp.FindUserByIdRspDTO;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -36,7 +39,24 @@ public class UserRpcService {
 
         return response.getData();
     }
+    /**
+     * 批量查询用户信息
+     *
+     * @param userIds
+     * @return
+     */
+    public List<FindUserByIdRspDTO> findByIds(List<Long> userIds) {
+        FindUsersByIdsReqDTO findUsersByIdsReqDTO = new FindUsersByIdsReqDTO();
+        findUsersByIdsReqDTO.setIds(userIds);
 
+        Response<List<FindUserByIdRspDTO>> response = userFeignApi.findByIds(findUsersByIdsReqDTO);
+
+        if (!response.isSuccess() || Objects.isNull(response.getData()) || CollUtil.isEmpty(response.getData())) {
+            return null;
+        }
+
+        return response.getData();
+    }
 
 
 }
