@@ -2,6 +2,7 @@ package com.ran.redbook.user.relation.biz.service;
 
 import com.RedBook.framework.common.response.Response;
 import com.ran.redbook.user.relation.biz.model.vo.FollowUserReqVO;
+import com.ran.redbook.user.relation.biz.model.vo.UnfollowUserReqVO;
 
 
 /**
@@ -15,6 +16,11 @@ public interface RelationService {
      * @return
      */
     Response<?> follow(FollowUserReqVO followUserReqVO);
-
+    /**
+     * 取关用户
+     * @param unfollowUserReqVO
+     * @return
+     */
+    Response<?> unfollow(UnfollowUserReqVO unfollowUserReqVO);
 }
 

@@ -3,6 +3,7 @@ package com.ran.redbook.user.relation.biz.controller;
 import com.RedBook.framework.biz.operationlog.aspect.ApiOperationLog;
 import com.RedBook.framework.common.response.Response;
 import com.ran.redbook.user.relation.biz.model.vo.FollowUserReqVO;
+import com.ran.redbook.user.relation.biz.model.vo.UnfollowUserReqVO;
 import com.ran.redbook.user.relation.biz.service.RelationService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,11 @@ public class RelationController {
     @ApiOperationLog(description = "关注用户")
     public Response<?> follow(@Validated @RequestBody FollowUserReqVO followUserReqVO) {
         return relationService.follow(followUserReqVO);
+    }
+    @PostMapping("/unfollow")
+    @ApiOperationLog(description = "取关用户")
+    public Response<?> unfollow(@Validated @RequestBody UnfollowUserReqVO unfollowUserReqVO) {
+        return relationService.unfollow(unfollowUserReqVO);
     }
 
 }
