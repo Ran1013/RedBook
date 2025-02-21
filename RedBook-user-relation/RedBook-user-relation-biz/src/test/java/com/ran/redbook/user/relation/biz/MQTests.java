@@ -20,12 +20,12 @@ import java.time.LocalDateTime;
 @Slf4j
 class MQTests {
 
-//    @Resource
-//    private RocketMQTemplate rocketMQTemplate;
-//
-//    /**
-//     * 测试：发送一万条 MQ
-//     */
+    @Resource
+    private RocketMQTemplate rocketMQTemplate;
+
+    /**
+     * 测试：发送一万条 MQ
+     */
 //    @Test
 //    void testBatchSendMQ() {
 //        for (long i = 0; i < 10000; i++) {
