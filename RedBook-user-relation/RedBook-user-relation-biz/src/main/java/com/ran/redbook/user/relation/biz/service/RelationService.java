@@ -2,10 +2,7 @@ package com.ran.redbook.user.relation.biz.service;
 
 import com.RedBook.framework.common.response.PageResponse;
 import com.RedBook.framework.common.response.Response;
-import com.ran.redbook.user.relation.biz.model.vo.FindFollowingListReqVO;
-import com.ran.redbook.user.relation.biz.model.vo.FindFollowingUserRspVO;
-import com.ran.redbook.user.relation.biz.model.vo.FollowUserReqVO;
-import com.ran.redbook.user.relation.biz.model.vo.UnfollowUserReqVO;
+import com.ran.redbook.user.relation.biz.model.vo.*;
 
 
 /**
@@ -31,7 +28,12 @@ public interface RelationService {
      * @return
      */
     PageResponse<FindFollowingUserRspVO> findFollowingList(FindFollowingListReqVO findFollowingListReqVO);
-
+    /**
+     * 查询关注列表
+     * @param findFansListReqVO
+     * @return
+     */
+    PageResponse<FindFansUserRspVO> findFansList(FindFansListReqVO findFansListReqVO);
 }
 
 
