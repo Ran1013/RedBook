@@ -1,4 +1,4 @@
-erver:
+server:
   port: 8090 # 项目启动的端口
 
 spring:
