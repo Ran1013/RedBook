@@ -33,6 +33,8 @@
         <module>RedBook-distributed-id-generator</module>
         <module>RedBook-note</module>
         <module>RedBook-user-relation</module>
+        <module>RedBook-count</module>
+        <module>RedBook-count/RedBook-count-api</module>
     </modules>
 
     <properties>
