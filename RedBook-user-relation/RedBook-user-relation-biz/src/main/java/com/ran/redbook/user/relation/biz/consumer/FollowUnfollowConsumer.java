@@ -32,7 +32,7 @@ import java.util.Objects;
  * 关注、取关 MQ 消费者
  **/
 @Component
-@RocketMQMessageListener(consumerGroup = "redbook_group", // Group 组
+@RocketMQMessageListener(consumerGroup = "redbook_group_" + MQConstants.TOPIC_FOLLOW_OR_UNFOLLOW, // Group 组
         topic = MQConstants.TOPIC_FOLLOW_OR_UNFOLLOW, // 消费的主题 Topic
         consumeMode = ConsumeMode.ORDERLY // 设置为顺序消费模式
 )
