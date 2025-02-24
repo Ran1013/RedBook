@@ -6,7 +6,10 @@ import lombok.Getter;
 import java.util.Objects;
 
 /**
- * 笔记类型
+ * @author: ran
+ * @url: www.RedBook.com
+ * @date: 2023-08-15 10:33
+ * @description: 笔记类型
  **/
 @Getter
 @AllArgsConstructor
@@ -49,4 +52,3 @@ public enum NoteTypeEnum {
     }
 
 }
-

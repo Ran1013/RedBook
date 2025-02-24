@@ -5,9 +5,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
- * RocketMQ 配置
+ *  RocketMQ 配置
  **/
 @Configuration
-@Import(RocketMQAutoConfiguration.class)
+@Import(RocketMQAutoConfiguration .class)
 public class RocketMQConfig {
 }

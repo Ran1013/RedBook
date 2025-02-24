@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 笔记
+ *  笔记
  **/
 @RestController
 @RequestMapping("/note")
@@ -40,11 +40,13 @@ public class NoteController {
     public Response<?> updateNote(@Validated @RequestBody UpdateNoteReqVO updateNoteReqVO) {
         return noteService.updateNote(updateNoteReqVO);
     }
+
     @PostMapping(value = "/delete")
     @ApiOperationLog(description = "删除笔记")
     public Response<?> deleteNote(@Validated @RequestBody DeleteNoteReqVO deleteNoteReqVO) {
         return noteService.deleteNote(deleteNoteReqVO);
     }
+
     @PostMapping(value = "/visible/onlyme")
     @ApiOperationLog(description = "笔记仅对自己可见")
     public Response<?> visibleOnlyMe(@Validated @RequestBody UpdateNoteVisibleOnlyMeReqVO updateNoteVisibleOnlyMeReqVO) {

@@ -1,11 +1,13 @@
 package com.ran.redbook.note.biz.service;
 
-
 import com.RedBook.framework.common.response.Response;
 import com.ran.redbook.note.biz.model.vo.*;
 
 /**
- * 笔记业务
+ * @author: ran
+ * @date: 2024/4/7 15:41
+ * @version: v1.0.0
+ * @description: 笔记业务
  **/
 public interface NoteService {
 

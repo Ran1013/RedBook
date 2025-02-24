@@ -20,7 +20,6 @@ public class UserRpcService {
 
     /**
      * 查询用户信息
-     *
      * @param userId
      * @return
      */

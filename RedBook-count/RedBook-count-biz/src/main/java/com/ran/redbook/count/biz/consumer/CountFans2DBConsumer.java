@@ -1,8 +1,8 @@
 package com.ran.redbook.count.biz.consumer;
 
 import cn.hutool.core.collection.CollUtil;
-import com.RedBook.framework.common.util.JsonUtils;
 import com.google.common.util.concurrent.RateLimiter;
+import com.RedBook.framework.common.util.JsonUtils;
 import com.ran.redbook.count.biz.constant.MQConstants;
 import com.ran.redbook.count.biz.domain.mapper.UserCountDOMapper;
 import jakarta.annotation.Resource;
@@ -19,7 +19,7 @@ import java.util.Map;
 @Component
 @RocketMQMessageListener(consumerGroup = "redbook_group_" + MQConstants.TOPIC_COUNT_FANS_2_DB, // Group 组
         topic = MQConstants.TOPIC_COUNT_FANS_2_DB // 主题 Topic
-)
+        )
 @Slf4j
 public class CountFans2DBConsumer implements RocketMQListener<String> {
 
@@ -50,4 +50,3 @@ public class CountFans2DBConsumer implements RocketMQListener<String> {
     }
 
 }
-

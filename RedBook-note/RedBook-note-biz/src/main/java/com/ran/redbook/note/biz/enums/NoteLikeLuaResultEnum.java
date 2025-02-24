@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.util.Objects;
 
 /**
- * 笔记点赞：执行 Lua 脚本返回结果
+ *  笔记点赞：执行 Lua 脚本返回结果
  **/
 @Getter
 @AllArgsConstructor
@@ -36,5 +36,3 @@ public enum NoteLikeLuaResultEnum {
         return null;
     }
 }
-
-

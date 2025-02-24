@@ -7,7 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 笔记仅对自己可见
+ * @author: ran
+ * @date: 2024/4/7 15:17
+ * @version: v1.0.0
+ * @description: 笔记仅对自己可见
  **/
 @Data
 @AllArgsConstructor

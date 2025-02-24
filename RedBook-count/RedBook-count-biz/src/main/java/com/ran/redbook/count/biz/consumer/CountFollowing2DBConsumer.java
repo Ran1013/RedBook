@@ -21,7 +21,7 @@ import java.util.Objects;
 @Component
 @RocketMQMessageListener(consumerGroup = "redbook_group_" + MQConstants.TOPIC_COUNT_FOLLOWING_2_DB, // Group 组
         topic = MQConstants.TOPIC_COUNT_FOLLOWING_2_DB // 主题 Topic
-)
+        )
 @Slf4j
 public class CountFollowing2DBConsumer implements RocketMQListener<String> {
 

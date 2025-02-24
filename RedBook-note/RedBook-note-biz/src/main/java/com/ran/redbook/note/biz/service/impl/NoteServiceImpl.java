@@ -38,7 +38,6 @@ import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.sound.midi.Soundbank;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -48,7 +47,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
- *  笔记业务
+ * @author: ran
+ * @date: 2024/4/7 15:41
+ * @version: v1.0.0
+ * @description: 笔记业务
  **/
 @Service
 @Slf4j
@@ -595,6 +597,7 @@ public class NoteServiceImpl implements NoteService {
 
         // 1. 校验被点赞的笔记是否存在
         checkNoteIsExist(noteId);
+
 
         // 2. 判断目标笔记，是否已经点赞过
         // 当前登录用户ID

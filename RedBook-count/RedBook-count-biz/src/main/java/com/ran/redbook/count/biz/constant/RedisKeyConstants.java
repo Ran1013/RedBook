@@ -13,6 +13,11 @@ public class RedisKeyConstants {
      */
     public static final String FIELD_FANS_TOTAL = "fansTotal";
 
+    /**
+     * Hash Field: 关注总数
+     */
+    public static final String FIELD_FOLLOWING_TOTAL = "followingTotal";
+
 
     /**
      * 构建用户维度计数 Key
@@ -23,11 +28,5 @@ public class RedisKeyConstants {
         return COUNT_USER_KEY_PREFIX + userId;
     }
 
-    /**
-     * Hash Field: 关注总数
-     */
-    public static final String FIELD_FOLLOWING_TOTAL = "followingTotal";
-
 
 }
-

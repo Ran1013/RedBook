@@ -1,8 +1,7 @@
 package com.ran.redbook.count.biz.constant;
 
-
 /**
- * MQ 常量
+ *  MQ 常量
  **/
 public interface MQConstants {
 
@@ -21,12 +20,9 @@ public interface MQConstants {
      */
     String TOPIC_COUNT_FANS_2_DB = "CountFans2DBTopic";
 
-
     /**
      * Topic: 粉丝数计数入库
      */
     String TOPIC_COUNT_FOLLOWING_2_DB = "CountFollowing2DBTopic";
-
-
 
 }

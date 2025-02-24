@@ -1,8 +1,8 @@
 package com.ran.redbook.count.biz.consumer;
 
-import com.RedBook.framework.common.util.JsonUtils;
 import com.github.phantomthief.collection.BufferTrigger;
 import com.google.common.collect.Maps;
+import com.RedBook.framework.common.util.JsonUtils;
 import com.ran.redbook.count.biz.constant.MQConstants;
 import com.ran.redbook.count.biz.constant.RedisKeyConstants;
 import com.ran.redbook.count.biz.enums.FollowUnfollowTypeEnum;
@@ -25,14 +25,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-
 /**
  * 计数: 粉丝数
  **/
 @Component
 @RocketMQMessageListener(consumerGroup = "redbook_group_" + MQConstants.TOPIC_COUNT_FANS, // Group 组
         topic = MQConstants.TOPIC_COUNT_FANS // 主题 Topic
-)
+        )
 @Slf4j
 public class CountFansConsumer implements RocketMQListener<String> {
 
@@ -40,7 +39,6 @@ public class CountFansConsumer implements RocketMQListener<String> {
     private RedisTemplate<String, Object> redisTemplate;
     @Resource
     private RocketMQTemplate rocketMQTemplate;
-
 
     private BufferTrigger<String> bufferTrigger = BufferTrigger.<String>batchBlocking()
             .bufferSize(50000) // 缓存队列的最大容量
@@ -130,4 +128,3 @@ public class CountFansConsumer implements RocketMQListener<String> {
         });
     }
 }
-

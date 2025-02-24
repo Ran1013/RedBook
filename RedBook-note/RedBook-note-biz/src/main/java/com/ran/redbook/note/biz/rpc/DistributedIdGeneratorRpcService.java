@@ -22,4 +22,5 @@ public class DistributedIdGeneratorRpcService {
         return distributedIdGeneratorFeignApi.getSnowflakeId("test");
     }
 
+
 }
