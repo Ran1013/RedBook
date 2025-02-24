@@ -31,4 +31,5 @@ public enum ResponseCodeEnum implements BaseExceptionInterface {
     private final String errorCode;
     // 错误信息
     private final String errorMessage;
+
 }
