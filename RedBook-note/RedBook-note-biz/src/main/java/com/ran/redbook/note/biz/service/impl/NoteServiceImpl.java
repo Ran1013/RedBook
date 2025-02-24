@@ -5,11 +5,12 @@ import cn.hutool.core.util.RandomUtil;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import com.RedBook.framework.biz.context.holder.LoginUserContextHolder;
 import com.RedBook.framework.common.exception.BizException;
 import com.RedBook.framework.common.response.Response;
+import com.RedBook.framework.common.util.DateUtils;
 import com.RedBook.framework.common.util.JsonUtils;
-import com.google.common.collect.Lists;
 import com.ran.redbook.note.biz.constant.MQConstants;
 import com.ran.redbook.note.biz.constant.RedisKeyConstants;
 import com.ran.redbook.note.biz.domain.dataobject.NoteDO;
@@ -45,7 +46,6 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
-
 
 /**
  * 笔记业务
@@ -313,7 +313,7 @@ public class NoteServiceImpl implements NoteService {
         threadPoolTaskExecutor.submit(() -> {
             String noteDetailJson1 = JsonUtils.toJsonString(findNoteDetailRspVO);
             // 过期时间（保底1天 + 随机秒数，将缓存过期时间打散，防止同一时间大量缓存失效，导致数据库压力太大）
-            long expireSeconds = 60 * 60 * 24 + RandomUtil.randomInt(60 * 60 * 24);
+            long expireSeconds = 60*60*24 + RandomUtil.randomInt(60*60*24);
             redisTemplate.opsForValue().set(noteDetailRedisKey, noteDetailJson1, expireSeconds, TimeUnit.SECONDS);
         });
 
@@ -440,7 +440,6 @@ public class NoteServiceImpl implements NoteService {
 
     /**
      * 删除本地笔记缓存
-     *
      * @param noteId
      */
     public void deleteNoteLocalCache(Long noteId) {
@@ -582,7 +581,6 @@ public class NoteServiceImpl implements NoteService {
 
         return Response.success();
     }
-
     /**
      * 点赞笔记
      *
@@ -614,15 +612,17 @@ public class NoteServiceImpl implements NoteService {
         Long result = redisTemplate.execute(script, Collections.singletonList(bloomUserNoteLikeListKey), noteId);
 
         NoteLikeLuaResultEnum noteLikeLuaResultEnum = NoteLikeLuaResultEnum.valueOf(result);
+        // 用户点赞列表 ZSet Key
+        String userNoteLikeZSetKey = RedisKeyConstants.buildUserNoteLikeZSetKey(userId);
 
         switch (noteLikeLuaResultEnum) {
             // Redis 中布隆过滤器不存在
-            case BLOOM_NOT_EXIST -> {
+            case NOT_EXIST -> {
                 // TODO: 从数据库中校验笔记是否被点赞，并异步初始化布隆过滤器，设置过期时间
                 int count = noteLikeDOMapper.selectCountByUserIdAndNoteId(userId, noteId);
 
                 // 保底1天+随机秒数
-                long expireSeconds = 60 * 60 * 24 + RandomUtil.randomInt(60 * 60 * 24);
+                long expireSeconds = 60*60*24 + RandomUtil.randomInt(60*60*24);
 
                 // 目标笔记已经被点赞
                 if (count > 0) {
@@ -638,48 +638,152 @@ public class NoteServiceImpl implements NoteService {
                 script.setResultType(Long.class);
                 redisTemplate.execute(script, Collections.singletonList(bloomUserNoteLikeListKey), noteId, expireSeconds);
             }
-            // 目标笔记已经被点赞
-            case NOTE_LIKED -> throw new BizException(ResponseCodeEnum.NOTE_ALREADY_LIKED);
+            // 目标笔记已经被点赞 (可能存在误判，需要进一步确认)
+            case NOTE_LIKED -> {
+                // 校验 ZSet 列表中是否包含被点赞的笔记ID
+                Double score = redisTemplate.opsForZSet().score(userNoteLikeZSetKey, noteId);
+
+                if (Objects.nonNull(score)) {
+                    throw new BizException(ResponseCodeEnum.NOTE_ALREADY_LIKED);
+                }
+
+                // 若 Score 为空，则表示 ZSet 点赞列表中不存在，查询数据库校验
+                int count = noteLikeDOMapper.selectNoteIsLiked(userId, noteId);
+
+                if (count > 0) {
+                    // 数据库里面有点赞记录，而 Redis 中 ZSet 不存在，需要重新异步初始化 ZSet
+                    asynInitUserNoteLikesZSet(userId, userNoteLikeZSetKey);
+
+                    throw new BizException(ResponseCodeEnum.NOTE_ALREADY_LIKED);
+                }
+            }
+        }
+        // 3. 更新用户 ZSET 点赞列表
+        LocalDateTime now = LocalDateTime.now();
+        // Lua 脚本路径
+        script.setScriptSource(new ResourceScriptSource(new ClassPathResource("/lua/note_like_check_and_update_zset.lua")));
+        // 返回值类型
+        script.setResultType(Long.class);
+
+        // 执行 Lua 脚本，拿到返回结果
+        result = redisTemplate.execute(script, Collections.singletonList(userNoteLikeZSetKey), noteId, DateUtils.localDateTime2Timestamp(now));
+
+        // 若 ZSet 列表不存在，需要重新初始化
+        if (Objects.equals(result, NoteLikeLuaResultEnum.NOT_EXIST.getCode())) {
+            // 查询当前用户最新点赞的 100 篇笔记
+            List<NoteLikeDO> noteLikeDOS = noteLikeDOMapper.selectLikedByUserIdAndLimit(userId, 100);
+
+            if (CollUtil.isNotEmpty(noteLikeDOS)) {
+                // 保底1天+随机秒数
+                long expireSeconds = 60*60*24 + RandomUtil.randomInt(60*60*24);
+                // 构建 Lua 参数
+                Object[] luaArgs = buildNoteLikeZSetLuaArgs(noteLikeDOS, expireSeconds);
+
+                DefaultRedisScript<Long> script2 = new DefaultRedisScript<>();
+                // Lua 脚本路径
+                script2.setScriptSource(new ResourceScriptSource(new ClassPathResource("/lua/batch_add_note_like_zset_and_expire.lua")));
+                // 返回值类型
+                script2.setResultType(Long.class);
+
+                redisTemplate.execute(script2, Collections.singletonList(userNoteLikeZSetKey), luaArgs);
+
+                // 再次调用 note_like_check_and_update_zset.lua 脚本，将点赞的笔记添加到 zset 中
+                redisTemplate.execute(script, Collections.singletonList(userNoteLikeZSetKey), noteId, DateUtils.localDateTime2Timestamp(now));
+            }
         }
 
-        // 3. 更新用户 ZSET 点赞列表
-
-        // 4. 发送 MQ, 将点赞数据落库
+        // TODO: 4. 发送 MQ, 将点赞数据落库
 
         return Response.success();
     }
+    /**
+     * 异步初始化用户点赞笔记 ZSet
+     * @param userId
+     * @param userNoteLikeZSetKey
+     */
+    private void asynInitUserNoteLikesZSet(Long userId, String userNoteLikeZSetKey) {
+        threadPoolTaskExecutor.execute(() -> {
+            // 判断用户笔记点赞 ZSET 是否存在
+            boolean hasKey = redisTemplate.hasKey(userNoteLikeZSetKey);
+
+            // 不存在，则重新初始化
+            if (!hasKey) {
+                // 查询当前用户最新点赞的 100 篇笔记
+                List<NoteLikeDO> noteLikeDOS = noteLikeDOMapper.selectLikedByUserIdAndLimit(userId, 100);
+                if (CollUtil.isNotEmpty(noteLikeDOS)) {
+                    // 保底1天+随机秒数
+                    long expireSeconds = 60*60*24 + RandomUtil.randomInt(60*60*24);
+                    // 构建 Lua 参数
+                    Object[] luaArgs = buildNoteLikeZSetLuaArgs(noteLikeDOS, expireSeconds);
+
+                    DefaultRedisScript<Long> script2 = new DefaultRedisScript<>();
+                    // Lua 脚本路径
+                    script2.setScriptSource(new ResourceScriptSource(new ClassPathResource("/lua/batch_add_note_like_zset_and_expire.lua")));
+                    // 返回值类型
+                    script2.setResultType(Long.class);
+
+                    redisTemplate.execute(script2, Collections.singletonList(userNoteLikeZSetKey), luaArgs);
+                }
+            }
+        });
+    }
 
 
     /**
-     * 校验笔记的可见性
+     * 构建 Lua 脚本参数
      *
-     * @param visible    是否可见
-     * @param currUserId 当前用户 ID
-     * @param creatorId  笔记创建者
+     * @param noteLikeDOS
+     * @param expireSeconds
+     * @return
      */
-    private void checkNoteVisible(Integer visible, Long currUserId, Long creatorId) {
-        if (Objects.equals(visible, NoteVisibleEnum.PRIVATE.getCode())
-                && !Objects.equals(currUserId, creatorId)) { // 仅自己可见, 并且访问用户为笔记创建者
-            throw new BizException(ResponseCodeEnum.NOTE_PRIVATE);
+    private static Object[] buildNoteLikeZSetLuaArgs(List<NoteLikeDO> noteLikeDOS, long expireSeconds) {
+        int argsLength = noteLikeDOS.size() * 2 + 1; // 每个笔记点赞关系有 2 个参数（score 和 value），最后再跟一个过期时间
+        Object[] luaArgs = new Object[argsLength];
+
+        int i = 0;
+        for (NoteLikeDO noteLikeDO : noteLikeDOS) {
+            luaArgs[i] = DateUtils.localDateTime2Timestamp(noteLikeDO.getCreateTime()); // 点赞时间作为 score
+            luaArgs[i + 1] = noteLikeDO.getNoteId();          // 笔记ID 作为 ZSet value
+            i += 2;
         }
+
+        luaArgs[argsLength - 1] = expireSeconds; // 最后一个参数是 ZSet 的过期时间
+        return luaArgs;
     }
 
     /**
-     * 校验笔记的可见性（针对 VO 实体类）
-     *
+     * 异步初始化布隆过滤器
      * @param userId
-     * @param findNoteDetailRspVO
+     * @param expireSeconds
+     * @param bloomUserNoteLikeListKey
      */
-    private void checkNoteVisibleFromVO(Long userId, FindNoteDetailRspVO findNoteDetailRspVO) {
-        if (Objects.nonNull(findNoteDetailRspVO)) {
-            Integer visible = findNoteDetailRspVO.getVisible();
-            checkNoteVisible(visible, userId, findNoteDetailRspVO.getCreatorId());
-        }
+    private void asynBatchAddNoteLike2BloomAndExpire(Long userId, long expireSeconds, String bloomUserNoteLikeListKey) {
+        threadPoolTaskExecutor.submit(() -> {
+            try {
+                // 异步全量同步一下，并设置过期时间
+                List<NoteLikeDO> noteLikeDOS = noteLikeDOMapper.selectByUserId(userId);
+
+                if (CollUtil.isNotEmpty(noteLikeDOS)) {
+                    DefaultRedisScript<Long> script = new DefaultRedisScript<>();
+                    // Lua 脚本路径
+                    script.setScriptSource(new ResourceScriptSource(new ClassPathResource("/lua/bloom_batch_add_note_like_and_expire.lua")));
+                    // 返回值类型
+                    script.setResultType(Long.class);
+
+                    // 构建 Lua 参数
+                    List<Object> luaArgs = Lists.newArrayList();
+                    noteLikeDOS.forEach(noteLikeDO -> luaArgs.add(noteLikeDO.getNoteId())); // 将每个点赞的笔记 ID 传入
+                    luaArgs.add(expireSeconds);  // 最后一个参数是过期时间（秒）
+                    redisTemplate.execute(script, Collections.singletonList(bloomUserNoteLikeListKey), luaArgs.toArray());
+                }
+            } catch (Exception e) {
+                log.error("## 异步初始化布隆过滤器异常: ", e);
+            }
+        });
     }
 
     /**
      * 校验笔记是否存在
-     *
      * @param noteId
      */
     private void checkNoteIsExist(Long noteId) {
@@ -717,34 +821,29 @@ public class NoteServiceImpl implements NoteService {
     }
 
     /**
-     * 异步初始化布隆过滤器
-     * @param userId
-     * @param expireSeconds
-     * @param bloomUserNoteLikeListKey
+     * 校验笔记的可见性
+     * @param visible 是否可见
+     * @param currUserId 当前用户 ID
+     * @param creatorId 笔记创建者
      */
-    private void asynBatchAddNoteLike2BloomAndExpire(Long userId, long expireSeconds, String bloomUserNoteLikeListKey) {
-        threadPoolTaskExecutor.submit(() -> {
-            try {
-                // 异步全量同步一下，并设置过期时间
-                List<NoteLikeDO> noteLikeDOS = noteLikeDOMapper.selectByUserId(userId);
-
-                if (CollUtil.isNotEmpty(noteLikeDOS)) {
-                    DefaultRedisScript<Long> script = new DefaultRedisScript<>();
-                    // Lua 脚本路径
-                    script.setScriptSource(new ResourceScriptSource(new ClassPathResource("/lua/bloom_batch_add_note_like_and_expire.lua")));
-                    // 返回值类型
-                    script.setResultType(Long.class);
-
-                    // 构建 Lua 参数
-                    List<Object> luaArgs = Lists.newArrayList();
-                    noteLikeDOS.forEach(noteLikeDO -> luaArgs.add(noteLikeDO.getNoteId())); // 将每个点赞的笔记 ID 传入
-                    luaArgs.add(expireSeconds);  // 最后一个参数是过期时间（秒）
-                    redisTemplate.execute(script, Collections.singletonList(bloomUserNoteLikeListKey), luaArgs.toArray());
-                }
-            } catch (Exception e) {
-                log.error("## 异步初始化布隆过滤器异常: ", e);
-            }
-        });
+    private void checkNoteVisible(Integer visible, Long currUserId, Long creatorId) {
+        if (Objects.equals(visible, NoteVisibleEnum.PRIVATE.getCode())
+                && !Objects.equals(currUserId, creatorId)) { // 仅自己可见, 并且访问用户为笔记创建者
+            throw new BizException(ResponseCodeEnum.NOTE_PRIVATE);
+        }
     }
+
+    /**
+     * 校验笔记的可见性（针对 VO 实体类）
+     * @param userId
+     * @param findNoteDetailRspVO
+     */
+    private void checkNoteVisibleFromVO(Long userId, FindNoteDetailRspVO findNoteDetailRspVO) {
+        if (Objects.nonNull(findNoteDetailRspVO)) {
+            Integer visible = findNoteDetailRspVO.getVisible();
+            checkNoteVisible(visible, userId, findNoteDetailRspVO.getCreatorId());
+        }
+    }
+
 
 }
