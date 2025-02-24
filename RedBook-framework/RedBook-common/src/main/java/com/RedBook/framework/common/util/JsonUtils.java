@@ -1,11 +1,14 @@
 package com.RedBook.framework.common.util;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.Map;
 
 public class JsonUtils {
     // 创建了一个私有的静态不可变的 ObjectMapper 实例，ObjectMapper 是 Jackson 库中用于序列化和反序列化 JSON 的核心类。
@@ -73,6 +76,23 @@ public class JsonUtils {
 
         return OBJECT_MAPPER.readValue(jsonStr, clazz);
     }
+    /**
+     * 将 JSON 字符串转换为 Map
+     * @param jsonStr
+     * @param keyClass
+     * @param valueClass
+     * @return
+     * @param <K>
+     * @param <V>
+     * @throws Exception
+     */
+    public static <K, V> Map<K, V> parseMap(String jsonStr, Class<K> keyClass, Class<V> valueClass) throws Exception {
+        // 创建 TypeReference，指定泛型类型
+        TypeReference<Map<K, V>> typeRef = new TypeReference<Map<K, V>>() {
+        };
 
+        // 将 JSON 字符串转换为 Map
+        return OBJECT_MAPPER.readValue(jsonStr, OBJECT_MAPPER.getTypeFactory().constructMapType(Map.class, keyClass, valueClass));
+    }
 
 }
