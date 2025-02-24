@@ -23,6 +23,11 @@ public class RedisKeyConstants {
         return COUNT_USER_KEY_PREFIX + userId;
     }
 
+    /**
+     * Hash Field: 关注总数
+     */
+    public static final String FIELD_FOLLOWING_TOTAL = "followingTotal";
+
 
 }
 
