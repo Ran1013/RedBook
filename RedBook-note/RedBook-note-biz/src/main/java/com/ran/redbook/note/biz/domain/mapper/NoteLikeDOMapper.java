@@ -26,4 +26,12 @@ public interface NoteLikeDOMapper {
 
     int updateByPrimaryKey(NoteLikeDO record);
 
+
+    /**
+     * 新增笔记点赞记录，若已存在，则更新笔记点赞记录
+     * @param noteLikeDO
+     * @return
+     */
+    int insertOrUpdate(NoteLikeDO noteLikeDO);
+
 }
