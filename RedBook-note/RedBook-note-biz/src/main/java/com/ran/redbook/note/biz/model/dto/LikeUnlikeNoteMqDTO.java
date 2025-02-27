@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @Builder
 public class LikeUnlikeNoteMqDTO {
 
+
     private Long userId;
 
     private Long noteId;
@@ -25,5 +26,11 @@ public class LikeUnlikeNoteMqDTO {
      */
     private Integer type;
 
+    /**
+     * 笔记发布者 ID
+     */
+    private Long noteCreatorId;
+
     private LocalDateTime createTime;
+
 }

@@ -13,6 +13,13 @@ public interface NoteDOMapper {
 
     int selectCountByNoteId(Long noteId);
 
+    /**
+     * 查询笔记的发布者用户 ID
+     * @param noteId
+     * @return
+     */
+    Long selectCreatorIdByNoteId(Long noteId);
+
     int updateByPrimaryKeySelective(NoteDO record);
 
     int updateByPrimaryKey(NoteDO record);
