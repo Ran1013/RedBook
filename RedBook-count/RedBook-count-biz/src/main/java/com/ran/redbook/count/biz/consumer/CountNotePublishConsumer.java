@@ -16,12 +16,12 @@ import org.springframework.stereotype.Component;
 import java.util.Objects;
 
 /**
- * 计数: 笔记发布数
+ *  计数: 笔记发布数
  **/
 @Component
 @RocketMQMessageListener(consumerGroup = "redbook_group_" + MQConstants.TOPIC_NOTE_OPERATE, // Group 组
         topic = MQConstants.TOPIC_NOTE_OPERATE // 主题 Topic
-)
+        )
 @Slf4j
 public class CountNotePublishConsumer implements RocketMQListener<Message> {
 

@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 聚合后计数：收藏、取消收藏笔记
+ *  聚合后计数：收藏、取消收藏笔记
  **/
 @Data
 @AllArgsConstructor

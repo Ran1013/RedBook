@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.util.Objects;
 
 /**
- * 笔记点赞、取消点赞 Type
+ *  笔记点赞、取消点赞 Type
  **/
 @Getter
 @AllArgsConstructor

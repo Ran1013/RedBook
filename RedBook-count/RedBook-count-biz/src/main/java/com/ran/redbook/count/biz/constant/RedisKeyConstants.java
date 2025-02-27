@@ -19,6 +19,11 @@ public class RedisKeyConstants {
     public static final String FIELD_LIKE_TOTAL = "likeTotal";
 
     /**
+     * Hash Field: 笔记发布总数
+     */
+    public static final String FIELD_NOTE_TOTAL = "noteTotal";
+
+    /**
      * Hash Field: 笔记收藏总数
      */
     public static final String FIELD_COLLECT_TOTAL = "collectTotal";
@@ -52,8 +57,5 @@ public class RedisKeyConstants {
         return COUNT_NOTE_KEY_PREFIX + noteId;
     }
 
-    /**
-     * Hash Field: 笔记发布总数
-     */
-    public static final String FIELD_NOTE_TOTAL = "noteTotal";
+
 }

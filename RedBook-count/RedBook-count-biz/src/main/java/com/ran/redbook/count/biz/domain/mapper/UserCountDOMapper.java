@@ -27,6 +27,13 @@ public interface UserCountDOMapper {
     int insertOrUpdateLikeTotalByUserId(@Param("count") Integer count, @Param("userId") Long userId);
 
     /**
+     * 添加记录或更新笔记发布数
+     * @param count
+     * @param userId
+     * @return
+     */
+    int insertOrUpdateNoteTotalByUserId(@Param("count") Long count, @Param("userId") Long userId);
+    /**
      * 添加记录或更新笔记收藏数
      * @param count
      * @param userId
@@ -47,14 +54,6 @@ public interface UserCountDOMapper {
     int updateByPrimaryKeySelective(UserCountDO record);
 
     int updateByPrimaryKey(UserCountDO record);
-
-    /**
-     * 添加记录或更新笔记发布数
-     * @param count
-     * @param userId
-     * @return
-     */
-    int insertOrUpdateNoteTotalByUserId(@Param("count") Long count, @Param("userId") Long userId);
 
 
 }
