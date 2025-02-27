@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 取消点赞笔记
+ *  取消点赞笔记
  **/
 @Data
 @AllArgsConstructor

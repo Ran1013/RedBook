@@ -12,11 +12,14 @@ public interface NoteCollectionDOMapper {
 
     int insertSelective(NoteCollectionDO record);
 
+    /**
+     * 新增笔记收藏记录，若已存在，则更新笔记收藏记录
+     * @param noteCollectionDO
+     * @return
+     */
+    int insertOrUpdate(NoteCollectionDO noteCollectionDO);
+
     NoteCollectionDO selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(NoteCollectionDO record);
-
-    int updateByPrimaryKey(NoteCollectionDO record);
 
     /**
      * 查询笔记是否被收藏
@@ -49,12 +52,9 @@ public interface NoteCollectionDOMapper {
      */
     List<NoteCollectionDO> selectCollectedByUserIdAndLimit(@Param("userId") Long userId, @Param("limit")  int limit);
 
-    /**
-     * 新增笔记收藏记录，若已存在，则更新笔记收藏记录
-     * @param noteCollectionDO
-     * @return
-     */
-    int insertOrUpdate(NoteCollectionDO noteCollectionDO);
+    int updateByPrimaryKeySelective(NoteCollectionDO record);
+
+    int updateByPrimaryKey(NoteCollectionDO record);
 
     /**
      * 取消点赞
@@ -62,4 +62,5 @@ public interface NoteCollectionDOMapper {
      * @return
      */
     int update2UnCollectByUserIdAndNoteId(NoteCollectionDO noteCollectionDO);
+
 }

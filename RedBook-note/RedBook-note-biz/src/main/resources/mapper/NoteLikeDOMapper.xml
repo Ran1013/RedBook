@@ -46,6 +46,14 @@
     values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{noteId,jdbcType=BIGINT}, 
       #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT})
   </insert>
+
+  <insert id="insertOrUpdate" parameterType="com.ran.redbook.note.biz.domain.dataobject.NoteLikeDO">
+    INSERT INTO t_note_like (user_id, note_id, create_time, status)
+    VALUES (#{userId}, #{noteId}, #{createTime}, #{status})
+      ON DUPLICATE KEY UPDATE
+          create_time = #{createTime}, status = #{status};
+  </insert>
+
   <insert id="insertSelective" parameterType="com.ran.redbook.note.biz.domain.dataobject.NoteLikeDO">
     insert into t_note_like
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -83,13 +91,6 @@
       </if>
     </trim>
   </insert>
-  <insert id="insertOrUpdate" parameterType="com.ran.redbook.note.biz.domain.dataobject.NoteLikeDO">
-    INSERT INTO t_note_like (user_id, note_id, create_time, status)
-    VALUES (#{userId}, #{noteId}, #{createTime}, #{status})
-      ON DUPLICATE KEY UPDATE
-                         create_time = #{createTime}, status = #{status};
-  </insert>
-
   <update id="updateByPrimaryKeySelective" parameterType="com.ran.redbook.note.biz.domain.dataobject.NoteLikeDO">
     update t_note_like
     <set>
@@ -116,9 +117,9 @@
       `status` = #{status,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
   <update id="update2UnlikeByUserIdAndNoteId" parameterType="com.ran.redbook.note.biz.domain.dataobject.NoteLikeDO">
     update t_note_like set status = #{status}, create_time = #{createTime}
     where user_id = #{userId} and note_id = #{noteId} and status = 1
   </update>
-
 </mapper>

@@ -4,10 +4,7 @@ import com.RedBook.framework.common.response.Response;
 import com.ran.redbook.note.biz.model.vo.*;
 
 /**
- * @author: ran
- * @date: 2024/4/7 15:41
- * @version: v1.0.0
- * @description: 笔记业务
+ *  笔记业务
  **/
 public interface NoteService {
 
@@ -86,5 +83,4 @@ public interface NoteService {
      * @return
      */
     Response<?> unCollectNote(UnCollectNoteReqVO unCollectNoteReqVO);
-
 }

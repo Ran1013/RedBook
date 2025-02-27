@@ -1,7 +1,7 @@
 package com.ran.redbook.note.biz.consumer;
 
-import com.RedBook.framework.common.util.JsonUtils;
 import com.google.common.util.concurrent.RateLimiter;
+import com.RedBook.framework.common.util.JsonUtils;
 import com.ran.redbook.note.biz.constant.MQConstants;
 import com.ran.redbook.note.biz.domain.dataobject.NoteLikeDO;
 import com.ran.redbook.note.biz.domain.mapper.NoteLikeDOMapper;
@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
- *  笔记点赞、取消点赞 MQ 消费者
+ * 笔记点赞、取消点赞 MQ 消费者
  **/
 @Component
 @RocketMQMessageListener(consumerGroup = "redbook_group_" + MQConstants.TOPIC_LIKE_OR_UNLIKE, // Group 组
@@ -31,6 +31,7 @@ import java.util.Objects;
 )
 @Slf4j
 public class LikeUnlikeNoteConsumer implements RocketMQListener<Message> {
+
     @Resource
     private NoteLikeDOMapper noteLikeDOMapper;
     @Resource
@@ -60,7 +61,6 @@ public class LikeUnlikeNoteConsumer implements RocketMQListener<Message> {
             handleUnlikeNoteTagMessage(bodyJsonStr);
         }
     }
-
 
     /**
      * 笔记点赞
@@ -161,7 +161,5 @@ public class LikeUnlikeNoteConsumer implements RocketMQListener<Message> {
             }
         });
     }
-
-
 
 }

@@ -1,7 +1,7 @@
 package com.ran.redbook.note.biz.consumer;
 
-import com.RedBook.framework.common.util.JsonUtils;
 import com.google.common.util.concurrent.RateLimiter;
+import com.RedBook.framework.common.util.JsonUtils;
 import com.ran.redbook.note.biz.constant.MQConstants;
 import com.ran.redbook.note.biz.domain.dataobject.NoteCollectionDO;
 import com.ran.redbook.note.biz.domain.mapper.NoteCollectionDOMapper;
@@ -91,6 +91,7 @@ public class CollectUnCollectNoteConsumer implements RocketMQListener<Message> {
 
         // 添加或更新笔记收藏记录
         int count = noteCollectionDOMapper.insertOrUpdate(noteCollectionDO);
+
         if (count == 0) return;
 
         // 更新数据库成功后，发送计数 MQ
@@ -140,6 +141,7 @@ public class CollectUnCollectNoteConsumer implements RocketMQListener<Message> {
 
         // 取消收藏：记录更新
         int count = noteCollectionDOMapper.update2UnCollectByUserIdAndNoteId(noteCollectionDO);
+
         if (count == 0) return;
 
         // 更新数据库成功后，发送计数 MQ

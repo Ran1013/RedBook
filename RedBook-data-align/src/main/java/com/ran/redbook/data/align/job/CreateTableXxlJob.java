@@ -1,21 +1,24 @@
 package com.ran.redbook.data.align.job;
 
-import com.xxl.job.core.context.XxlJobHelper;
-import com.xxl.job.core.handler.annotation.XxlJob;
 import com.ran.redbook.data.align.constant.TableConstants;
 import com.ran.redbook.data.align.domain.mapper.CreateTableMapper;
-import org.springframework.beans.factory.annotation.Value;
+import com.xxl.job.core.context.XxlJobHelper;
+import com.xxl.job.core.handler.annotation.XxlJob;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 /**
- * 定时任务：自动创建日增量计数变更表
+ *  定时任务：自动创建日增量计数变更表
  **/
 @Component
+@RefreshScope
 public class CreateTableXxlJob {
+
     /**
      * 表总分片数
      */

@@ -1,11 +1,10 @@
 package com.ran.redbook.note.biz.enums;
 
 import lombok.AllArgsConstructor;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 笔记收藏、取消收藏 Type
+ *  笔记收藏、取消收藏 Type
  **/
 @Getter
 @AllArgsConstructor

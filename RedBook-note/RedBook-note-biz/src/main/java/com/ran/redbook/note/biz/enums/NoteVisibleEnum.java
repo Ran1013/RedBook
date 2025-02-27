@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * @author: ran
- * @url: www.RedBook.com
- * @date: 2023-08-15 10:33
- * @description: 笔记可见性
+ * 笔记可见性
  **/
 @Getter
 @AllArgsConstructor

@@ -12,6 +12,13 @@ public interface NoteLikeDOMapper {
 
     int insertSelective(NoteLikeDO record);
 
+    /**
+     * 新增笔记点赞记录，若已存在，则更新笔记点赞记录
+     * @param noteLikeDO
+     * @return
+     */
+    int insertOrUpdate(NoteLikeDO noteLikeDO);
+
     NoteLikeDO selectByPrimaryKey(Long id);
 
     int selectCountByUserIdAndNoteId(@Param("userId") Long userId, @Param("noteId") Long noteId);
@@ -26,19 +33,10 @@ public interface NoteLikeDOMapper {
 
     int updateByPrimaryKey(NoteLikeDO record);
 
-
-    /**
-     * 新增笔记点赞记录，若已存在，则更新笔记点赞记录
-     * @param noteLikeDO
-     * @return
-     */
-    int insertOrUpdate(NoteLikeDO noteLikeDO);
-
     /**
      * 取消点赞
      * @param noteLikeDO
      * @return
      */
     int update2UnlikeByUserIdAndNoteId(NoteLikeDO noteLikeDO);
-
 }

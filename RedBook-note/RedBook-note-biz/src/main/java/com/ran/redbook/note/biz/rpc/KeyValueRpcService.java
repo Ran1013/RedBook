@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.Objects;
 
 /**
- *  KV 键值服务
+ * KV 键值服务
  **/
 @Component
 public class KeyValueRpcService {

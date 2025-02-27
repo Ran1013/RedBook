@@ -9,10 +9,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- * @author: ran
- * @date: 2024/4/7 15:17
- * @version: v1.0.0
- * @description: 笔记修改
+ *  笔记修改
  **/
 @Data
 @AllArgsConstructor

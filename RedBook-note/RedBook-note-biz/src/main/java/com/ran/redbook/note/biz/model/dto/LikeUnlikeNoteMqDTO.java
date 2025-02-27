@@ -8,14 +8,13 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 点赞、取消点赞笔记
+ *  点赞、取消点赞笔记
  **/
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class LikeUnlikeNoteMqDTO {
-
 
     private Long userId;
 
@@ -32,5 +31,4 @@ public class LikeUnlikeNoteMqDTO {
     private Long noteCreatorId;
 
     private LocalDateTime createTime;
-
 }

@@ -7,10 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * @author: ran
- * @date: 2024/4/7 15:17
- * @version: v1.0.0
- * @description: 笔记置顶/取消置顶
+ *  笔记置顶/取消置顶
  **/
 @Data
 @AllArgsConstructor

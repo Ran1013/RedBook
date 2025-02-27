@@ -5,7 +5,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 /**
- * 用户服务
+ *  用户服务
  **/
 @Component
 public class DistributedIdGeneratorRpcService {

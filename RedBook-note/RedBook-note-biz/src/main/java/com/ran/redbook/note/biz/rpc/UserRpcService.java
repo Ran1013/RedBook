@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.Objects;
 
 /**
- * 用户服务
+ *  用户服务
  **/
 @Component
 public class UserRpcService {
