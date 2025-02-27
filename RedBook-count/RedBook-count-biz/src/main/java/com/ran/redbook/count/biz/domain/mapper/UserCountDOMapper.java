@@ -48,5 +48,13 @@ public interface UserCountDOMapper {
 
     int updateByPrimaryKey(UserCountDO record);
 
+    /**
+     * 添加记录或更新笔记发布数
+     * @param count
+     * @param userId
+     * @return
+     */
+    int insertOrUpdateNoteTotalByUserId(@Param("count") Long count, @Param("userId") Long userId);
+
 
 }
