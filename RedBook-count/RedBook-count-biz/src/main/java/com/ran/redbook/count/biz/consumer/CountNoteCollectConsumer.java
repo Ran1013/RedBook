@@ -1,9 +1,8 @@
 package com.ran.redbook.count.biz.consumer;
 
-import com.RedBook.framework.common.util.JsonUtils;
 import com.github.phantomthief.collection.BufferTrigger;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import com.RedBook.framework.common.util.JsonUtils;
 import com.ran.redbook.count.biz.constant.MQConstants;
 import com.ran.redbook.count.biz.constant.RedisKeyConstants;
 import com.ran.redbook.count.biz.enums.CollectUnCollectNoteTypeEnum;
@@ -28,12 +27,12 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- *  笔记收藏数
+ *  计数: 笔记收藏数
  **/
 @Component
 @RocketMQMessageListener(consumerGroup = "redbook_group_" + MQConstants.TOPIC_COUNT_NOTE_COLLECT, // Group 组
         topic = MQConstants.TOPIC_COUNT_NOTE_COLLECT // 主题 Topic
-)
+        )
 @Slf4j
 public class CountNoteCollectConsumer implements RocketMQListener<String> {
 
@@ -154,6 +153,3 @@ public class CountNoteCollectConsumer implements RocketMQListener<String> {
         });
     }
 }
-
-
-

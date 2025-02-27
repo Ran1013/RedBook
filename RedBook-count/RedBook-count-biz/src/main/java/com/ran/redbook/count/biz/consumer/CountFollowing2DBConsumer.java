@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import java.util.Objects;
 
 /**
- * 计数: 关注数存库
+ *  计数: 关注数存库
  **/
 @Component
 @RocketMQMessageListener(consumerGroup = "redbook_group_" + MQConstants.TOPIC_COUNT_FOLLOWING_2_DB, // Group 组

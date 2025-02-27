@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 /**
- * 计数: 粉丝数存库
+ *  计数: 粉丝数存库
  **/
 @Component
 @RocketMQMessageListener(consumerGroup = "redbook_group_" + MQConstants.TOPIC_COUNT_FANS_2_DB, // Group 组

@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * @author: ran
- * @date: 2024/4/7 15:17
- * @version: v1.0.0
- * @description: 通知计数服务：关注、取关
+ *  通知计数服务：关注、取关
  **/
 @Data
 @AllArgsConstructor

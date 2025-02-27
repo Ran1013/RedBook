@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.util.Objects;
 
 /**
- *  笔记收藏、取消收藏 Type
+ * 笔记收藏、取消收藏 Type
  **/
 @Getter
 @AllArgsConstructor

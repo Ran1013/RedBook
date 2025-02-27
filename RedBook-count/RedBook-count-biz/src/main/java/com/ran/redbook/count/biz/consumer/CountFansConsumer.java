@@ -114,7 +114,7 @@ public class CountFansConsumer implements RocketMQListener<String> {
         Message<String> message = MessageBuilder.withPayload(JsonUtils.toJsonString(countMap))
                 .build();
 
-        // 异步发送 MQ 消息，提升接口响应速度
+        // 异步发送 MQ 消息
         rocketMQTemplate.asyncSend(MQConstants.TOPIC_COUNT_FANS_2_DB, message, new SendCallback() {
             @Override
             public void onSuccess(SendResult sendResult) {

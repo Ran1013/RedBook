@@ -2,7 +2,6 @@ package com.ran.redbook.count.biz.consumer;
 
 import com.github.phantomthief.collection.BufferTrigger;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.RedBook.framework.common.util.JsonUtils;
 import com.ran.redbook.count.biz.constant.MQConstants;
 import com.ran.redbook.count.biz.constant.RedisKeyConstants;
@@ -33,7 +32,7 @@ import java.util.stream.Collectors;
 @Component
 @RocketMQMessageListener(consumerGroup = "redbook_group_" + MQConstants.TOPIC_COUNT_NOTE_LIKE, // Group 组
         topic = MQConstants.TOPIC_COUNT_NOTE_LIKE // 主题 Topic
-)
+        )
 @Slf4j
 public class CountNoteLikeConsumer implements RocketMQListener<String> {
 
@@ -98,10 +97,10 @@ public class CountNoteLikeConsumer implements RocketMQListener<String> {
             }
             // 将分组后统计出的最终计数，存入 countList 中
             countList.add(AggregationCountLikeUnlikeNoteMqDTO.builder()
-                    .noteId(noteId)
-                    .creatorId(creatorId)
-                    .count(finalCount)
-                    .build());
+                            .noteId(noteId)
+                            .creatorId(creatorId)
+                            .count(finalCount)
+                            .build());
         }
 
         log.info("## 【笔记点赞数】聚合后的计数数据: {}", JsonUtils.toJsonString(countList));
@@ -153,4 +152,3 @@ public class CountNoteLikeConsumer implements RocketMQListener<String> {
         });
     }
 }
-

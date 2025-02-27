@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.util.Objects;
 
 /**
- * 关注、取关 Type
+ *  关注、取关 Type
  **/
 @Getter
 @AllArgsConstructor

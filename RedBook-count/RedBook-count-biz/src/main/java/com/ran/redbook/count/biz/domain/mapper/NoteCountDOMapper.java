@@ -10,13 +10,8 @@ public interface NoteCountDOMapper {
 
     int insertSelective(NoteCountDO record);
 
-    NoteCountDO selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(NoteCountDO record);
-
-    int updateByPrimaryKey(NoteCountDO record);
     /**
-     * 添加笔记计数记录或更新笔记点赞数
+     * 添加记录或更新笔记点赞数
      * @param count
      * @param noteId
      * @return
@@ -31,4 +26,9 @@ public interface NoteCountDOMapper {
      */
     int insertOrUpdateCollectTotalByNoteId(@Param("count") Integer count, @Param("noteId") Long noteId);
 
+    NoteCountDO selectByPrimaryKey(Long id);
+
+    int updateByPrimaryKeySelective(NoteCountDO record);
+
+    int updateByPrimaryKey(NoteCountDO record);
 }

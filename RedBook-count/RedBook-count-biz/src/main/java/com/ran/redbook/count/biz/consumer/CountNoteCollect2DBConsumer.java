@@ -15,15 +15,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.List;
-import java.util.Map;
 
 /**
- * 计数: 笔记收藏数落库
+ *  计数: 笔记收藏数落库
  **/
 @Component
 @RocketMQMessageListener(consumerGroup = "redbook_group_" + MQConstants.TOPIC_COUNT_NOTE_COLLECT_2_DB, // Group 组
         topic = MQConstants.TOPIC_COUNT_NOTE_COLLECT_2_DB // 主题 Topic
-)
+        )
 @Slf4j
 public class CountNoteCollect2DBConsumer implements RocketMQListener<String> {
 
@@ -76,5 +75,3 @@ public class CountNoteCollect2DBConsumer implements RocketMQListener<String> {
     }
 
 }
-
-

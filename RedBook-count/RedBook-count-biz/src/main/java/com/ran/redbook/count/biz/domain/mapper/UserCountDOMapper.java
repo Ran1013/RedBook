@@ -47,4 +47,6 @@ public interface UserCountDOMapper {
     int updateByPrimaryKeySelective(UserCountDO record);
 
     int updateByPrimaryKey(UserCountDO record);
+
+
 }
