@@ -17,7 +17,6 @@ import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -125,5 +124,3 @@ public class TodayNoteLikeIncrementData2DBConsumer implements RocketMQListener<S
         }
     }
 }
-
-

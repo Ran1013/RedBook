@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * xxl-job 配置类
+ *  xxl-job 配置类
  **/
 @Configuration
 @Slf4j

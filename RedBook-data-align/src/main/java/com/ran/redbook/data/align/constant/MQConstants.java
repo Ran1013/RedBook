@@ -1,7 +1,7 @@
 package com.ran.redbook.data.align.constant;
 
 /**
- *  MQ 常量
+ * redbook MQ 常量
  **/
 public interface MQConstants {
 

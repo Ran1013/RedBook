@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 /**
- * redbook定时任务：自动创建日增量计数变更表
+ *  定时任务：自动创建日增量计数变更表
  **/
 @Component
 @RefreshScope

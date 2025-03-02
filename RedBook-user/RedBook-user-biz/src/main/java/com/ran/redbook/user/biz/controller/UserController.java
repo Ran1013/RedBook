@@ -19,10 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * @author: ran
- * @date: 2024/4/4 13:22
- * @version: v1.0.0
- * @description: 用户
+ * 用户
  **/
 @RestController
 @RequestMapping("/user")

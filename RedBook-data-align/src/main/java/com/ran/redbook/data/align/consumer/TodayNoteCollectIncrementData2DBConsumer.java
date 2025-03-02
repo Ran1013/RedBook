@@ -5,19 +5,18 @@ import com.ran.redbook.data.align.constant.MQConstants;
 import com.ran.redbook.data.align.constant.RedisKeyConstants;
 import com.ran.redbook.data.align.constant.TableConstants;
 import com.ran.redbook.data.align.domain.mapper.InsertMapper;
-import com.ran.redbook.data.align.model.dto.LikeUnlikeNoteMqDTO;
 import com.ran.redbook.data.align.model.dto.CollectUnCollectNoteMqDTO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.time.LocalDate;
@@ -125,4 +124,3 @@ public class  TodayNoteCollectIncrementData2DBConsumer implements RocketMQListen
         }
     }
 }
-

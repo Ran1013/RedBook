@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 /**
- * redbook定时任务：自动删除最近一个月的日增量临时表
+ *  定时任务：自动删除最近一个月的日增量临时表
  **/
 @Component
 @RefreshScope

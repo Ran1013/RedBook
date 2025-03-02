@@ -19,7 +19,7 @@ import java.util.List;
 
 
 /**
- * redbook定时分片广播任务：对当日发生变更的用户关注数进行对齐
+ *  定时分片广播任务：对当日发生变更的用户关注数进行对齐
  **/
 @Component
 @Slf4j

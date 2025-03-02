@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * redbook 收藏、取消收藏笔记
+ *  收藏、取消收藏笔记
  **/
 @Data
 @AllArgsConstructor
