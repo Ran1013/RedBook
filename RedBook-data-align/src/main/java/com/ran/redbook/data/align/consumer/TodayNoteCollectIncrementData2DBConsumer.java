@@ -4,7 +4,7 @@ import com.RedBook.framework.common.util.JsonUtils;
 import com.ran.redbook.data.align.constant.MQConstants;
 import com.ran.redbook.data.align.constant.RedisKeyConstants;
 import com.ran.redbook.data.align.constant.TableConstants;
-import com.ran.redbook.data.align.domain.mapper.InsertRecordMapper;
+import com.ran.redbook.data.align.domain.mapper.InsertMapper;
 import com.ran.redbook.data.align.model.dto.CollectUnCollectNoteMqDTO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -25,12 +25,12 @@ import java.util.Collections;
 import java.util.Objects;
 
 /**
- * 日增量数据落库：笔记收藏、取消收藏
+ *  日增量数据落库：笔记收藏、取消收藏
  **/
 @Component
 @RocketMQMessageListener(consumerGroup = "redbook_group_data_align_" + MQConstants.TOPIC_COUNT_NOTE_COLLECT, // Group 组
         topic = MQConstants.TOPIC_COUNT_NOTE_COLLECT // 主题 Topic
-)
+        )
 @Slf4j
 public class TodayNoteCollectIncrementData2DBConsumer implements RocketMQListener<String> {
 
@@ -39,7 +39,7 @@ public class TodayNoteCollectIncrementData2DBConsumer implements RocketMQListene
     @Resource
     private TransactionTemplate transactionTemplate;
     @Resource
-    private InsertRecordMapper insertRecordMapper;
+    private InsertMapper insertRecordMapper;
 
     /**
      * 表总分片数
@@ -109,4 +109,3 @@ public class TodayNoteCollectIncrementData2DBConsumer implements RocketMQListene
         }
     }
 }
-

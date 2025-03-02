@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- *  用户关注、取关
+ * redbook 用户关注、取关
  **/
 @Data
 @AllArgsConstructor

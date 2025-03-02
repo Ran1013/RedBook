@@ -4,19 +4,20 @@ import com.RedBook.framework.common.util.JsonUtils;
 import com.ran.redbook.data.align.constant.MQConstants;
 import com.ran.redbook.data.align.constant.RedisKeyConstants;
 import com.ran.redbook.data.align.constant.TableConstants;
-import com.ran.redbook.data.align.domain.mapper.InsertRecordMapper;
+import com.ran.redbook.data.align.domain.mapper.InsertMapper;
 import com.ran.redbook.data.align.model.dto.NoteOperateMqDTO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
+
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -24,25 +25,25 @@ import java.util.Collections;
 import java.util.Objects;
 
 /**
- * 日增量数据落库：笔记发布、删除
+ *  日增量数据落库：笔记发布、删除
  **/
 @Component
 @RocketMQMessageListener(consumerGroup = "redbook_group_data_align_" + MQConstants.TOPIC_NOTE_OPERATE, // Group 组
         topic = MQConstants.TOPIC_NOTE_OPERATE // 主题 Topic
-)
+        )
 @Slf4j
 public class TodayNotePublishIncrementData2DBConsumer implements RocketMQListener<String> {
 
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
     @Resource
-    private InsertRecordMapper insertRecordMapper;
+    private InsertMapper insertRecordMapper;
+
     /**
      * 表总分片数
      */
     @Value("${table.shards}")
     private int tableShards;
-
 
     @Override
     public void onMessage(String body) {
@@ -89,4 +90,3 @@ public class TodayNotePublishIncrementData2DBConsumer implements RocketMQListene
         }
     }
 }
-

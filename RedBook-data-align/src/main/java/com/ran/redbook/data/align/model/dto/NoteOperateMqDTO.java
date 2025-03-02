@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- *  笔记操作
+ * redbook 笔记操作
  **/
 @Data
 @AllArgsConstructor
@@ -30,4 +30,3 @@ public class NoteOperateMqDTO {
     private Integer type;
 
 }
-

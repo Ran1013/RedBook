@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * xxl-job 配置读取
+ *  xxl-job 配置读取
  **/
 @ConfigurationProperties(prefix = XxlJobProperties.PREFIX)
 @Component

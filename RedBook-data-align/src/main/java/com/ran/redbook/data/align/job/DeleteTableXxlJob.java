@@ -1,9 +1,9 @@
 package com.ran.redbook.data.align.job;
 
-import com.xxl.job.core.context.XxlJobHelper;
-import com.xxl.job.core.handler.annotation.XxlJob;
 import com.ran.redbook.data.align.constant.TableConstants;
 import com.ran.redbook.data.align.domain.mapper.DeleteTableMapper;
+import com.xxl.job.core.context.XxlJobHelper;
+import com.xxl.job.core.handler.annotation.XxlJob;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 /**
- * 定时任务：自动删除最近一个月的日增量临时表
+ * redbook定时任务：自动删除最近一个月的日增量临时表
  **/
 @Component
 @RefreshScope

@@ -1,7 +1,7 @@
 package com.ran.redbook.data.align.constant;
 
 /**
- *  表常量类
+ * 表常量类
  **/
 public class TableConstants {
 

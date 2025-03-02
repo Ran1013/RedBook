@@ -2,15 +2,17 @@ package com.ran.redbook.data.align.constant;
 
 
 public class RedisKeyConstants {
+
     /**
-     * 布隆过滤器：自增量变更数据，用户笔记点赞，取消点赞 前缀
+     * 布隆过滤器：日增量变更数据，用户笔记点赞，取消点赞 前缀
      */
     public static final String BLOOM_TODAY_NOTE_LIKE_LIST_KEY = "bloom:dataAlign:note:likes:";
 
     /**
-     * 布隆过滤器：自增量变更数据，用户笔记收藏，取消收藏 前缀
+     * 布隆过滤器：日增量变更数据，用户笔记收藏，取消收藏 前缀
      */
     public static final String BLOOM_TODAY_NOTE_COLLECT_LIST_KEY = "bloom:dataAlign:note:collects:";
+
     /**
      * 布隆过滤器：日增量变更数据，用户笔记发布，删除 前缀
      */
@@ -27,7 +29,26 @@ public class RedisKeyConstants {
     public static final String BLOOM_TODAY_USER_FANS_LIST_KEY = "bloom:dataAlign:user:fans:";
 
     /**
-     * 构建完整的布隆过滤器：自增量变更数据，用户笔记点赞，取消点赞 KEY
+     * 用户维度计数 Key 前缀
+     */
+    private static final String COUNT_USER_KEY_PREFIX = "count:user:";
+
+    /**
+     * Hash Field: 关注总数
+     */
+    public static final String FIELD_FOLLOWING_TOTAL = "followingTotal";
+
+    /**
+     * 构建用户维度计数 Key
+     * @param userId
+     * @return
+     */
+    public static String buildCountUserKey(Long userId) {
+        return COUNT_USER_KEY_PREFIX + userId;
+    }
+
+    /**
+     * 构建完整的布隆过滤器：日增量变更数据，用户笔记点赞，取消点赞 KEY
      * @param date
      * @return
      */
@@ -36,13 +57,14 @@ public class RedisKeyConstants {
     }
 
     /**
-     * 构建完整的布隆过滤器：自增量变更数据，用户笔记收藏，取消收藏 KEY
+     * 构建完整的布隆过滤器：日增量变更数据，用户笔记收藏，取消收藏 KEY
      * @param date
      * @return
      */
     public static String buildBloomUserNoteCollectListKey(String date) {
         return BLOOM_TODAY_NOTE_COLLECT_LIST_KEY + date;
     }
+
     /**
      * 构建完整的布隆过滤器：日增量变更数据，用户笔记发布，删除 KEY
      * @param date
@@ -51,6 +73,7 @@ public class RedisKeyConstants {
     public static String buildBloomUserNoteOperateListKey(String date) {
         return BLOOM_TODAY_USER_NOTE_OPERATOR_LIST_KEY + date;
     }
+
     /**
      * 构建完整的布隆过滤器：日增量变更数据，用户关注数 KEY
      * @param date
@@ -68,5 +91,6 @@ public class RedisKeyConstants {
     public static String buildBloomUserFansListKey(String date) {
         return BLOOM_TODAY_USER_FANS_LIST_KEY + date;
     }
+
 
 }

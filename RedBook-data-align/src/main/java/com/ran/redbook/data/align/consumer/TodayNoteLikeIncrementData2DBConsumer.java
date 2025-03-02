@@ -4,7 +4,7 @@ import com.RedBook.framework.common.util.JsonUtils;
 import com.ran.redbook.data.align.constant.MQConstants;
 import com.ran.redbook.data.align.constant.RedisKeyConstants;
 import com.ran.redbook.data.align.constant.TableConstants;
-import com.ran.redbook.data.align.domain.mapper.InsertRecordMapper;
+import com.ran.redbook.data.align.domain.mapper.InsertMapper;
 import com.ran.redbook.data.align.model.dto.LikeUnlikeNoteMqDTO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ import java.util.Objects;
 
 
 /**
- * 日增量数据落库：笔记点赞、取消点赞
+ *  日增量数据落库：笔记点赞、取消点赞
  **/
 @Component
 @RocketMQMessageListener(consumerGroup = "redbook_group_data_align_" + MQConstants.TOPIC_COUNT_NOTE_LIKE, // Group 组
@@ -40,7 +40,7 @@ public class TodayNoteLikeIncrementData2DBConsumer implements RocketMQListener<S
     @Resource
     private TransactionTemplate transactionTemplate;
     @Resource
-    private InsertRecordMapper insertRecordMapper;
+    private InsertMapper insertRecordMapper;
 
     /**
      * 表总分片数
@@ -66,7 +66,7 @@ public class TodayNoteLikeIncrementData2DBConsumer implements RocketMQListener<S
         String date = LocalDate.now()
                 .format(DateTimeFormatter.ofPattern("yyyyMMdd")); // 格式化
 
-        String bloomKey = RedisKeyConstants.buildBloomUserNoteCollectListKey(date);
+        String bloomKey = RedisKeyConstants.buildBloomUserNoteLikeListKey(date);
 
         // 1. 布隆过滤器判断该日增量数据是否已经记录
         DefaultRedisScript<Long> script = new DefaultRedisScript<>();
@@ -90,7 +90,7 @@ public class TodayNoteLikeIncrementData2DBConsumer implements RocketMQListener<S
             transactionTemplate.execute(status -> {
                 try {
                     // 将日增量变更数据，分别写入两张表
-                    // - t_data_align_following_count_temp_日期_分片序号
+                    // - t_data_align_note_like_count_temp_日期_分片序号
                     // - t_data_align_user_like_count_temp_日期_分片序号
                     insertRecordMapper.insert2DataAlignNoteLikeCountTempTable(TableConstants.buildTableNameSuffix(date, noteIdHashKey), noteId);
                     insertRecordMapper.insert2DataAlignUserLikeCountTempTable(TableConstants.buildTableNameSuffix(date, userIdHashKey), noteCreatorId);

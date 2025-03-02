@@ -4,20 +4,19 @@ import com.RedBook.framework.common.util.JsonUtils;
 import com.ran.redbook.data.align.constant.MQConstants;
 import com.ran.redbook.data.align.constant.RedisKeyConstants;
 import com.ran.redbook.data.align.constant.TableConstants;
-import com.ran.redbook.data.align.domain.mapper.InsertRecordMapper;
+import com.ran.redbook.data.align.domain.mapper.InsertMapper;
 import com.ran.redbook.data.align.model.dto.FollowUnfollowMqDTO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.stereotype.Component;
-
+import org.springframework.beans.factory.annotation.Value;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -29,14 +28,14 @@ import java.util.Objects;
 @Component
 @RocketMQMessageListener(consumerGroup = "redbook_group_data_align_" + MQConstants.TOPIC_COUNT_FOLLOWING, // Group 组
         topic = MQConstants.TOPIC_COUNT_FOLLOWING // 主题 Topic
-)
+        )
 @Slf4j
 public class TodayUserFollowIncrementData2DBConsumer implements RocketMQListener<String> {
 
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
     @Resource
-    private InsertRecordMapper insertRecordMapper;
+    private InsertMapper insertRecordMapper;
 
     /**
      * 表总分片数
@@ -76,6 +75,7 @@ public class TodayUserFollowIncrementData2DBConsumer implements RocketMQListener
 
         // 执行 Lua 脚本，拿到返回结果
         Long result = redisTemplate.execute(script, Collections.singletonList(userBloomKey), userId);
+
         // Lua 脚本：添加到布隆过滤器
         RedisScript<Long> bloomAddScript = RedisScript.of("return redis.call('BF.ADD', KEYS[1], ARGV[1])", Long.class);
 
@@ -96,7 +96,6 @@ public class TodayUserFollowIncrementData2DBConsumer implements RocketMQListener
             // 数据库写入成功后，再添加布隆过滤器中
             redisTemplate.execute(bloomAddScript, Collections.singletonList(userBloomKey), userId);
         }
-
 
         // ------------------------- 目标用户的粉丝数变更记录 -------------------------
         // 目标用户 ID 对应的 Bloom Key
@@ -123,5 +122,3 @@ public class TodayUserFollowIncrementData2DBConsumer implements RocketMQListener
         }
     }
 }
-
-
