@@ -36,6 +36,7 @@
         <module>RedBook-count</module>
         <module>RedBook-count/RedBook-count-api</module>
         <module>RedBook-data-align</module>
+        <module>redbook-search</module>
     </modules>
 
     <properties>
