@@ -1,9 +1,9 @@
 package com.ran.redbook.search.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
-import com.RedBook.framework.common.util.NumberUtils;
 import com.google.common.collect.Lists;
 import com.RedBook.framework.common.response.PageResponse;
+import com.RedBook.framework.common.util.NumberUtils;
 import com.ran.redbook.search.index.UserIndex;
 import com.ran.redbook.search.model.vo.SearchUserReqVO;
 import com.ran.redbook.search.model.vo.SearchUserRspVO;
@@ -28,10 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author: ran
- * @date: 2024/4/7 15:41
- * @version: v1.0.0
- * @description: 用户搜索业务
+ *  用户搜索业务
  **/
 @Service
 @Slf4j
@@ -136,7 +133,6 @@ public class UserServiceImpl implements UserService {
                         .highlightNickname(highlightedNickname)
                         .build();
                 searchUserRspVOS.add(searchUserRspVO);
-
             }
         } catch (Exception e) {
             log.error("==> 查询 Elasticserach 异常: ", e);
