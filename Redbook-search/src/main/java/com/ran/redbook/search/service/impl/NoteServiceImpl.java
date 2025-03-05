@@ -298,9 +298,9 @@ public class NoteServiceImpl implements NoteService {
                         .avatar(avatar)
                         .nickname(nickname)
                         .updateTime(DateUtils.formatRelativeTime(updateTime))
-                        .likeTotal(NumberUtils.formatNumberString(likeTotal))
-                        .commentTotal(NumberUtils.formatNumberString(commentTotal))
-                        .collectTotal(NumberUtils.formatNumberString(collectTotal))
+                        .likeTotal(NumberUtils.formatNumberString(likeTotal != null ? likeTotal : 0))
+                        .commentTotal(NumberUtils.formatNumberString(commentTotal != null ? commentTotal : 0))
+                        .collectTotal(NumberUtils.formatNumberString(collectTotal != null ? collectTotal : 0))
                         .build();
                 searchNoteRspVOS.add(searchNoteRspVO);
             }

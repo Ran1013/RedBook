@@ -12,7 +12,7 @@
 
     <!-- 指定打包方式 -->
     <packaging>jar</packaging>
-    <artifactId>redbook-search</artifactId>
+    <artifactId>Redbook-search</artifactId>
     <name>${project.artifactId}</name>
     <description>搜索服务</description>
 
