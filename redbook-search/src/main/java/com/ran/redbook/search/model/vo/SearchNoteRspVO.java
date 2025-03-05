@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+
 /**
  * 搜索笔记
  **/
@@ -49,7 +50,17 @@ public class SearchNoteRspVO {
     /**
      * 最后一次编辑时间
      */
-    private LocalDateTime updateTime;
+    private String updateTime;
+
+    /**
+     * 被评论数
+     */
+    private String commentTotal;
+
+    /**
+     * 被收藏数
+     */
+    private String collectTotal;
 
     /**
      * 被点赞总数
