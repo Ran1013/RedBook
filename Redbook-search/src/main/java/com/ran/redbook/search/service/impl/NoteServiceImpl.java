@@ -1,11 +1,11 @@
 package com.ran.redbook.search.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import com.google.common.collect.Lists;
 import com.RedBook.framework.common.constant.DateConstants;
 import com.RedBook.framework.common.response.PageResponse;
 import com.RedBook.framework.common.util.DateUtils;
 import com.RedBook.framework.common.util.NumberUtils;
-import com.google.common.collect.Lists;
 import com.ran.redbook.search.enums.NotePublishTimeRangeEnum;
 import com.ran.redbook.search.enums.NoteSortTypeEnum;
 import com.ran.redbook.search.index.NoteIndex;
@@ -23,7 +23,6 @@ import org.elasticsearch.common.lucene.search.function.CombineFunction;
 import org.elasticsearch.common.lucene.search.function.FieldValueFactorFunction;
 import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.functionscore.FieldValueFactorFunctionBuilder;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
@@ -123,11 +122,11 @@ public class NoteServiceImpl implements NoteService {
 
             switch (notePublishTimeRangeEnum) {
                 case DAY ->
-                        startTime = DateUtils.localDateTime2String(LocalDateTime.now().minusDays(1)); // 一天之前的时间
+                    startTime = DateUtils.localDateTime2String(LocalDateTime.now().minusDays(1)); // 一天之前的时间
                 case WEEK ->
-                        startTime = DateUtils.localDateTime2String(LocalDateTime.now().minusWeeks(1)); // 一周之前的时间
+                    startTime = DateUtils.localDateTime2String(LocalDateTime.now().minusWeeks(1)); // 一周之前的时间
                 case HALF_YEAR ->
-                        startTime = DateUtils.localDateTime2String(LocalDateTime.now().minusMonths(6)); // 半年之前的时间
+                    startTime = DateUtils.localDateTime2String(LocalDateTime.now().minusMonths(6)); // 半年之前的时间
             }
             // 设置时间范围
             if (StringUtils.isNoneBlank(startTime)) {
@@ -311,4 +310,3 @@ public class NoteServiceImpl implements NoteService {
         return PageResponse.success(searchNoteRspVOS, pageNo, total);
     }
 }
-

@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 搜索用户
+ *  搜索用户
  **/
 @Data
 @AllArgsConstructor
@@ -35,7 +35,7 @@ public class SearchUserRspVO {
     private String avatar;
 
     /**
-     * 小哈书ID
+     * 小红书ID
      */
     private String redbookId;
 

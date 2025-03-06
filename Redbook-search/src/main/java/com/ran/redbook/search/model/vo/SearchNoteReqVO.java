@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 搜索笔记
+ *  搜索笔记
  **/
 @Data
 @AllArgsConstructor
@@ -21,6 +21,7 @@ public class SearchNoteReqVO {
 
     @Min(value = 1, message = "页码不能小于 1")
     private Integer pageNo = 1; // 默认值为第一页
+
     /**
      * 笔记类型：null：综合 / 0：图文 / 1：视频
      */

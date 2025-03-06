@@ -3,7 +3,7 @@ package com.ran.redbook.search.service;
 import org.springframework.http.ResponseEntity;
 
 /**
- * 拓展词典
+ *  拓展词典
  **/
 public interface ExtDictService {
 
@@ -12,4 +12,5 @@ public interface ExtDictService {
      * @return
      */
     ResponseEntity<String> getHotUpdateExtDict();
+
 }

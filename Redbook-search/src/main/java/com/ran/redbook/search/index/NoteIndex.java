@@ -1,7 +1,7 @@
 package com.ran.redbook.search.index;
 
 /**
- *  笔记索引
+ * 笔记索引
  **/
 public class NoteIndex {
 

@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.util.Objects;
 
 /**
- * 笔记排序类型
+ *  笔记排序类型
  **/
 @Getter
 @AllArgsConstructor
@@ -40,4 +40,3 @@ public enum NoteSortTypeEnum {
     }
 
 }
-

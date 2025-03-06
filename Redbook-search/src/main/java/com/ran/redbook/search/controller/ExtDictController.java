@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 /**
- * 热更新拓展词典
+ *  热更新拓展词典
  **/
 @RestController
 @RequestMapping("/search")

@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * Canal 配置读取
+ *  Canal 配置读取
  **/
 @ConfigurationProperties(prefix = CanalProperties.PREFIX)
 @Component

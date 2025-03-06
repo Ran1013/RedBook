@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 /**
- * 笔记搜索
+ *  笔记搜索
  **/
 @RestController
 @RequestMapping("/search")
@@ -26,7 +26,7 @@ public class NoteController {
     private NoteService noteService;
 
     @PostMapping("/note")
-    @ApiOperationLog(description = "搜索用户")
+    @ApiOperationLog(description = "搜索笔记")
     public PageResponse<SearchNoteRspVO> searchNote(@RequestBody @Validated SearchNoteReqVO searchNoteReqVO) {
         return noteService.searchNote(searchNoteReqVO);
     }
