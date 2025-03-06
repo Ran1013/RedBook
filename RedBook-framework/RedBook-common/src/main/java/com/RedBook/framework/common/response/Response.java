@@ -5,6 +5,10 @@ import com.RedBook.framework.common.exception.BizException;
 import lombok.Data;
 
 import java.io.Serializable;
+
+/**
+ * 响应参数工具类
+ **/
 @Data
 public class Response<T> implements Serializable {
 

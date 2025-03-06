@@ -1,5 +1,8 @@
 package com.RedBook.framework.common.constant;
 
+/**
+ *  全局常量
+ **/
 public interface GlobalConstants {
 
     /**

@@ -3,6 +3,9 @@ package com.RedBook.framework.common.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ *  状态
+ **/
 @Getter
 @AllArgsConstructor
 public enum StatusEnum {

@@ -2,7 +2,6 @@ package com.ran.redbook.gateway.exception;
 
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.exception.NotPermissionException;
-import cn.dev33.satoken.exception.SaTokenException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.RedBook.framework.common.response.Response;
 import com.ran.redbook.gateway.enums.ResponseCodeEnum;

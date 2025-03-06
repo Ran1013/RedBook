@@ -1,6 +1,5 @@
 package com.ran.redbook.gateway.filter;
 
-import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.collection.CollUtil;
 import com.RedBook.framework.common.constant.GlobalConstants;
 import com.ran.redbook.gateway.constant.RedisKeyConstants;

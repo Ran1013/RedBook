@@ -20,23 +20,28 @@
     <modules>
         <!-- 平台基础框架 -->
         <module>RedBook-framework</module>
-        <!-- 认证服务 -->
-        <module>RedBook-auth</module>
         <!-- Gateway 网关服务 -->
         <module>RedBook-gateway</module>
+        <!-- 认证服务 -->
+        <module>RedBook-auth</module>
         <!-- 对象存储服务 -->
         <module>RedBook-oss</module>
         <!-- 用户服务 -->
         <module>RedBook-user</module>
         <!-- KV 键值存储服务 -->
         <module>RedBook-kv</module>
+        <!-- 分布式 ID 生成服务 -->
         <module>RedBook-distributed-id-generator</module>
+        <!-- 笔记服务 -->
         <module>RedBook-note</module>
+        <!-- 用户关系服务 -->
         <module>RedBook-user-relation</module>
+        <!-- 计数服务 -->
         <module>RedBook-count</module>
-        <module>RedBook-count/RedBook-count-api</module>
+        <!-- 数据对齐服务 -->
         <module>RedBook-data-align</module>
-        <module>Redbook-search</module>
+        <!-- 搜索服务 -->
+        <module>RedBook-search</module>
     </modules>
 
     <properties>
@@ -83,12 +88,43 @@
         <canal.version>1.1.7</canal.version>
     </properties>
 
+
     <!-- 统一依赖管理 -->
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>com.RedBook</groupId>
                 <artifactId>RedBook-common</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.RedBook</groupId>
+                <artifactId>RedBook-oss-api</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.RedBook</groupId>
+                <artifactId>RedBook-user-api</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.RedBook</groupId>
+                <artifactId>RedBook-kv-api</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.RedBook</groupId>
+                <artifactId>RedBook-search-api</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.RedBook</groupId>
+                <artifactId>RedBook-distributed-id-generator-api</artifactId>
                 <version>${revision}</version>
             </dependency>
 
@@ -112,30 +148,6 @@
                 <artifactId>RedBook-spring-boot-starter-biz-context</artifactId>
                 <version>${revision}</version>
             </dependency>
-
-            <dependency>
-                <groupId>com.RedBook</groupId>
-                <artifactId>RedBook-oss-api</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.RedBook</groupId>
-                <artifactId>RedBook-user-api</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.RedBook</groupId>
-                <artifactId>RedBook-kv-api</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.RedBook</groupId>
-                <artifactId>RedBook-distributed-id-generator-api</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
 
             <!-- Spring Boot 官方依赖管理 -->
             <dependency>
@@ -294,6 +306,7 @@
                 <artifactId>jaxb-runtime</artifactId>
                 <version>${jaxb-runtime.version}</version>
             </dependency>
+
             <!-- Feign 表单提交 -->
             <dependency>
                 <groupId>io.github.openfeign.form</groupId>
@@ -307,6 +320,7 @@
                 <artifactId>caffeine</artifactId>
                 <version>${caffeine.version}</version>
             </dependency>
+
             <!-- Rocket MQ -->
             <dependency>
                 <groupId>org.apache.rocketmq</groupId>
@@ -361,7 +375,6 @@
                 <artifactId>canal.protocol</artifactId>
                 <version>${canal.version}</version>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
 

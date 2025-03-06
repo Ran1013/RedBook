@@ -9,7 +9,7 @@ import java.text.DecimalFormat;
 public class NumberUtils {
 
     /**
-     * 数字转换字符串
+     * 数字转换字符串工具
      *
      * @param number
      * @return

@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 /**
- *  分页响应参数工具类
+ * 分页响应参数工具类
  **/
 @Data
 public class PageResponse<T> extends Response<List<T>> {
@@ -50,6 +50,7 @@ public class PageResponse<T> extends Response<List<T>> {
     public static long getTotalPage(long totalCount, long pageSize) {
         return pageSize == 0 ? 0 : (totalCount + pageSize - 1) / pageSize;
     }
+
     /**
      * 计算分页查询的 offset
      * @param pageNo
@@ -63,4 +64,5 @@ public class PageResponse<T> extends Response<List<T>> {
         }
         return (pageNo - 1) * pageSize;
     }
+
 }

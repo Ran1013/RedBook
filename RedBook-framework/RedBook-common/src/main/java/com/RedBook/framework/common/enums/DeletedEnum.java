@@ -3,6 +3,9 @@ package com.RedBook.framework.common.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ *  逻辑删除
+ **/
 @Getter
 @AllArgsConstructor
 public enum DeletedEnum {

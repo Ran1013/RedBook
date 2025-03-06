@@ -12,7 +12,6 @@ import com.RedBook.framework.common.exception.BizException;
 import com.RedBook.framework.common.response.Response;
 import com.RedBook.framework.common.util.JsonUtils;
 import com.RedBook.framework.common.util.ParamUtils;
-import com.google.common.collect.Lists;
 import com.ran.redbook.user.biz.constant.RedisKeyConstants;
 import com.ran.redbook.user.biz.constant.RoleConstants;
 import com.ran.redbook.user.biz.domain.dataobject.RoleDO;

@@ -6,6 +6,7 @@ import com.ran.redbook.data.align.constant.TableConstants;
 import com.ran.redbook.data.align.domain.mapper.DeleteMapper;
 import com.ran.redbook.data.align.domain.mapper.SelectMapper;
 import com.ran.redbook.data.align.domain.mapper.UpdateMapper;
+import com.ran.redbook.data.align.rpc.SearchRpcService;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import jakarta.annotation.Resource;
@@ -18,7 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
- *  定时分片广播任务：对当日发生变更的笔记发布数进行对齐
+ * 定时分片广播任务：对当日发生变更的笔记发布数进行对齐
  **/
 @Component
 @Slf4j
@@ -32,6 +33,8 @@ public class NotePublishCountShardingXxlJob {
     private DeleteMapper deleteMapper;
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
+    @Resource
+    private SearchRpcService searchRpcService;
 
     /**
      * 分片广播任务
@@ -86,6 +89,9 @@ public class NotePublishCountShardingXxlJob {
                         redisTemplate.opsForHash().put(redisKey, RedisKeyConstants.FIELD_NOTE_TOTAL, noteTotal);
                     }
                 }
+
+                // 远程 RPC, 调用搜索服务，重新构建索引
+                searchRpcService.rebuildUserDocument(userId);
             });
 
             // 4. 批量物理删除这一批次记录

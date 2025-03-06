@@ -43,7 +43,7 @@ public final class ParamUtils {
     private static final String ID_REGEX = "^[a-zA-Z0-9_]+$";
 
     /**
-     * 小哈书 ID 校验
+     * 小红书 ID 校验
      *
      * @param redbookId
      * @return

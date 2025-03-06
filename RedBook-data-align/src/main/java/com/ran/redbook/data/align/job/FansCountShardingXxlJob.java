@@ -6,10 +6,13 @@ import com.ran.redbook.data.align.constant.TableConstants;
 import com.ran.redbook.data.align.domain.mapper.DeleteMapper;
 import com.ran.redbook.data.align.domain.mapper.SelectMapper;
 import com.ran.redbook.data.align.domain.mapper.UpdateMapper;
+import com.ran.redbook.data.align.rpc.SearchRpcService;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
+import com.ran.redbook.search.api.SearchFeignApi;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -18,13 +21,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
+
 /**
  *  定时分片广播任务：对当日发生变更的用户粉丝数进行对齐
  **/
 @Component
 @Slf4j
 public class FansCountShardingXxlJob {
-
+   
     @Resource
     private SelectMapper selectMapper;
     @Resource
@@ -33,6 +37,10 @@ public class FansCountShardingXxlJob {
     private DeleteMapper deleteMapper;
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
+    @Resource
+    private SearchFeignApi searchFeignApi;
+    @Autowired
+    private SearchRpcService searchRpcService;
 
     /**
      * 分片广播任务
@@ -87,6 +95,9 @@ public class FansCountShardingXxlJob {
                         redisTemplate.opsForHash().put(redisKey, RedisKeyConstants.FIELD_FANS_TOTAL, fansTotal);
                     }
                 }
+
+                // 远程 RPC, 调用搜索服务，重新构建索引
+                searchRpcService.rebuildUserDocument(userId);
             });
 
             // 4. 批量物理删除这一批次记录
