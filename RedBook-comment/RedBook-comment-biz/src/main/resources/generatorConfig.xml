@@ -20,7 +20,7 @@
 
         <!-- 数据库链接 -->
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://127.0.0.1:3306/redbook"
+                        connectionURL="jdbc:mysql://127.0.0.1:3307/redbook"
                         userId="root"
                         password="root">
             <!-- 解决多个重名的表生成表结构不一致问题 -->
@@ -45,11 +45,12 @@
                              targetProject="src/main/java"/>
 
         <!-- 需要生成的表-实体类 -->
-        <table tableName="t_comment" domainObjectName="CommentDO"
+        <table tableName="t_comment_like" domainObjectName="CommentLikeDO"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
                selectByExampleQueryId="false"/>
+
     </context>
 </generatorConfiguration>
