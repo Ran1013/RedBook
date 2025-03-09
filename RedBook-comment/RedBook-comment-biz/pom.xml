@@ -37,6 +37,11 @@
             <artifactId>RedBook-distributed-id-generator-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.RedBook</groupId>
+            <artifactId>RedBook-kv-api</artifactId>
+        </dependency>
+
         <!-- Jackson 组件 -->
         <dependency>
             <groupId>com.RedBook</groupId>

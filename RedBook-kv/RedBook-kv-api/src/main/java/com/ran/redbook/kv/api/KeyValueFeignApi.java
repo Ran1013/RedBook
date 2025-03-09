@@ -3,6 +3,7 @@ package com.ran.redbook.kv.api;
 import com.RedBook.framework.common.response.Response;
 import com.ran.redbook.kv.constant.ApiConstants;
 import com.ran.redbook.kv.dto.req.AddNoteContentReqDTO;
+import com.ran.redbook.kv.dto.req.BatchAddCommentContentReqDTO;
 import com.ran.redbook.kv.dto.req.DeleteNoteContentReqDTO;
 import com.ran.redbook.kv.dto.req.FindNoteContentReqDTO;
 import com.ran.redbook.kv.dto.rsp.FindNoteContentRspDTO;
@@ -26,6 +27,7 @@ public interface KeyValueFeignApi {
 
     @PostMapping(value = PREFIX + "/note/content/delete")
     Response<?> deleteNoteContent(@RequestBody DeleteNoteContentReqDTO deleteNoteContentReqDTO);
-
+    @PostMapping(value = PREFIX + "/comment/content/batchAdd")
+    Response<?> batchAddCommentContent(@RequestBody BatchAddCommentContentReqDTO batchAddCommentContentReqDTO);
 }
 

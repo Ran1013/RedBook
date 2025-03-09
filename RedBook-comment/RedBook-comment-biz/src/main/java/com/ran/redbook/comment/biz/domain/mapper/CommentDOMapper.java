@@ -1,6 +1,7 @@
 package com.ran.redbook.comment.biz.domain.mapper;
 
 import com.ran.redbook.comment.biz.domain.dataobject.CommentDO;
+import com.ran.redbook.comment.biz.model.bo.CommentBO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -24,4 +25,11 @@ public interface CommentDOMapper {
     int updateByPrimaryKeySelective(CommentDO record);
 
     int updateByPrimaryKey(CommentDO record);
+    /**
+     * 批量插入评论
+     * @param comments
+     * @return
+     */
+    int batchInsert(@Param("comments") List<CommentBO> comments);
+
 }
