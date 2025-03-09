@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
 /**
- *  发送 MQ 重试工具类
+ * 发送 MQ 重试工具类
  **/
 @Component
 @Slf4j

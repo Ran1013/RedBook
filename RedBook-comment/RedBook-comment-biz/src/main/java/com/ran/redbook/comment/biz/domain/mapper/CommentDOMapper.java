@@ -1,6 +1,9 @@
 package com.ran.redbook.comment.biz.domain.mapper;
 
 import com.ran.redbook.comment.biz.domain.dataobject.CommentDO;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface CommentDOMapper {
     int deleteByPrimaryKey(Long id);
@@ -10,6 +13,13 @@ public interface CommentDOMapper {
     int insertSelective(CommentDO record);
 
     CommentDO selectByPrimaryKey(Long id);
+
+    /**
+     * 根据评论 ID 批量查询
+     * @param commentIds
+     * @return
+     */
+    List<CommentDO> selectByCommentIds(@Param("commentIds") List<Long> commentIds);
 
     int updateByPrimaryKeySelective(CommentDO record);
 

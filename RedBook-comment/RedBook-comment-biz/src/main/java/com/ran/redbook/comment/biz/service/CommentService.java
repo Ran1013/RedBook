@@ -4,7 +4,7 @@ import com.RedBook.framework.common.response.Response;
 import com.ran.redbook.comment.biz.model.vo.PublishCommentReqVO;
 
 /**
- * 评论业务
+ *  评论业务
  **/
 public interface CommentService {
 

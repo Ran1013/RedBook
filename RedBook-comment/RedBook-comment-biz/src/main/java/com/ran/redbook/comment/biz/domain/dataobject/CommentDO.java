@@ -14,29 +14,31 @@ import java.time.LocalDateTime;
 public class CommentDO {
     private Long id;
 
-    private String content;
+    private Long noteId;
 
-    private String avatar;
+    private Long userId;
 
-    private String nickname;
+    private String contentUuid;
 
-    private String mail;
+    private Boolean isContentEmpty;
 
-    private String website;
+    private String imageUrl;
 
-    private String routerUrl;
+    private Integer level;
+
+    private Long replyTotal;
+
+    private Long likeTotal;
+
+    private Long parentId;
+
+    private Long replyCommentId;
+
+    private Long replyUserId;
+
+    private Boolean isTop;
 
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
-
-    private Boolean isDeleted;
-
-    private Long replyCommentId;
-
-    private Long parentCommentId;
-
-    private String reason;
-
-    private Integer status;
 }

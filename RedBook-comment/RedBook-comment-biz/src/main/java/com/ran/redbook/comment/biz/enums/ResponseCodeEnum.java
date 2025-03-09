@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 响应异常码
+ *  响应异常码
  **/
 @Getter
 @AllArgsConstructor
