@@ -56,6 +56,12 @@ public interface MQConstants {
     String TOPIC_NOTE_OPERATE = "NoteOperateTopic";
 
     /**
+     * Topic: 评论热度值更新
+     */
+    String TOPIC_COMMENT_HEAT_UPDATE = "CommentHeatUpdateTopic";
+
+
+    /**
      * Tag 标签：笔记发布
      */
     String TAG_NOTE_PUBLISH = "publishNote";
