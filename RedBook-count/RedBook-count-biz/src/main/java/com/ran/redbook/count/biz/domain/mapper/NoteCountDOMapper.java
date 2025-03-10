@@ -31,4 +31,13 @@ public interface NoteCountDOMapper {
     int updateByPrimaryKeySelective(NoteCountDO record);
 
     int updateByPrimaryKey(NoteCountDO record);
+
+    /**
+     * 添加记录或更新笔记评论数
+     * @param count
+     * @param noteId
+     * @return
+     */
+    int insertOrUpdateCommentTotalByNoteId(@Param("count") int count, @Param("noteId") Long noteId);
+
 }
