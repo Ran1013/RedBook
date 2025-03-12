@@ -12,6 +12,13 @@ public interface CommentDOMapper {
 
     int insert(CommentDO record);
 
+    /**
+     * 批量插入评论
+     * @param comments
+     * @return
+     */
+    int batchInsert(@Param("comments") List<CommentBO> comments);
+
     int insertSelective(CommentDO record);
 
     CommentDO selectByPrimaryKey(Long id);
@@ -23,15 +30,17 @@ public interface CommentDOMapper {
      */
     List<CommentDO> selectByCommentIds(@Param("commentIds") List<Long> commentIds);
 
+    /**
+     * 查询一级评论下最早回复的评论
+     * @param parentId
+     * @return
+     */
+    CommentDO selectEarliestByParentId(Long parentId);
+
     int updateByPrimaryKeySelective(CommentDO record);
 
     int updateByPrimaryKey(CommentDO record);
-    /**
-     * 批量插入评论
-     * @param comments
-     * @return
-     */
-    int batchInsert(@Param("comments") List<CommentBO> comments);
+
     /**
      * 批量更新热度值
      * @param commentIds
@@ -40,4 +49,13 @@ public interface CommentDOMapper {
      */
     int batchUpdateHeatByCommentIds(@Param("commentIds") List<Long> commentIds,
                                     @Param("commentHeatBOS") List<CommentHeatBO> commentHeatBOS);
+
+    /**
+     * 更新一级评论的 first_reply_comment_id
+     * @param firstReplyCommentId
+     * @param id
+     * @return
+     */
+    int updateFirstReplyCommentIdByPrimaryKey(@Param("firstReplyCommentId") Long firstReplyCommentId,
+                                              @Param("id") Long id);
 }
