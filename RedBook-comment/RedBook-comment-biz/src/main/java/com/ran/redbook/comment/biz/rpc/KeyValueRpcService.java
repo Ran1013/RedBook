@@ -1,16 +1,21 @@
 package com.ran.redbook.comment.biz.rpc;
 
+import cn.hutool.core.collection.CollUtil;
 import com.google.common.collect.Lists;
 import com.RedBook.framework.common.constant.DateConstants;
 import com.RedBook.framework.common.response.Response;
 import com.ran.redbook.comment.biz.model.bo.CommentBO;
 import com.ran.redbook.kv.api.KeyValueFeignApi;
 import com.ran.redbook.kv.dto.req.BatchAddCommentContentReqDTO;
+import com.ran.redbook.kv.dto.req.BatchFindCommentContentReqDTO;
 import com.ran.redbook.kv.dto.req.CommentContentReqDTO;
+import com.ran.redbook.kv.dto.req.FindCommentContentReqDTO;
+import com.ran.redbook.kv.dto.rsp.FindCommentContentRspDTO;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  *  KV 键值服务
@@ -56,5 +61,25 @@ public class KeyValueRpcService {
         return true;
     }
 
+    /**
+     * 批量查询评论内容
+     * @param noteId
+     * @param findCommentContentReqDTOS
+     * @return
+     */
+    public List<FindCommentContentRspDTO> batchFindCommentContent(Long noteId, List<FindCommentContentReqDTO> findCommentContentReqDTOS) {
+        BatchFindCommentContentReqDTO bathFindCommentContentReqDTO = BatchFindCommentContentReqDTO.builder()
+                .noteId(noteId)
+                .commentContentKeys(findCommentContentReqDTOS)
+                .build();
+
+        Response<List<FindCommentContentRspDTO>> response = keyValueFeignApi.batchFindCommentContent(bathFindCommentContentReqDTO);
+
+        if (!response.isSuccess() || Objects.isNull(response.getData()) || CollUtil.isEmpty(response.getData())) {
+            return null;
+        }
+
+        return response.getData();
+    }
 
 }

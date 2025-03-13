@@ -1,6 +1,9 @@
 package com.ran.redbook.comment.biz.service;
 
+import com.RedBook.framework.common.response.PageResponse;
 import com.RedBook.framework.common.response.Response;
+import com.ran.redbook.comment.biz.model.vo.FindCommentItemRspVO;
+import com.ran.redbook.comment.biz.model.vo.FindCommentPageListReqVO;
 import com.ran.redbook.comment.biz.model.vo.PublishCommentReqVO;
 
 /**
@@ -14,4 +17,10 @@ public interface CommentService {
      * @return
      */
     Response<?> publishComment(PublishCommentReqVO publishCommentReqVO);
+    /**
+     * 评论列表分页查询
+     * @param findCommentPageListReqVO
+     * @return
+     */
+    PageResponse<FindCommentItemRspVO> findCommentPageList(FindCommentPageListReqVO findCommentPageListReqVO);
 }

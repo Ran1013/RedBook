@@ -2,14 +2,14 @@ package com.ran.redbook.kv.api;
 
 import com.RedBook.framework.common.response.Response;
 import com.ran.redbook.kv.constant.ApiConstants;
-import com.ran.redbook.kv.dto.req.AddNoteContentReqDTO;
-import com.ran.redbook.kv.dto.req.BatchAddCommentContentReqDTO;
-import com.ran.redbook.kv.dto.req.DeleteNoteContentReqDTO;
-import com.ran.redbook.kv.dto.req.FindNoteContentReqDTO;
+import com.ran.redbook.kv.dto.req.*;
+import com.ran.redbook.kv.dto.rsp.FindCommentContentRspDTO;
 import com.ran.redbook.kv.dto.rsp.FindNoteContentRspDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
 
 /**
  * K-V 键值存储 Feign 接口
@@ -29,5 +29,7 @@ public interface KeyValueFeignApi {
     Response<?> deleteNoteContent(@RequestBody DeleteNoteContentReqDTO deleteNoteContentReqDTO);
     @PostMapping(value = PREFIX + "/comment/content/batchAdd")
     Response<?> batchAddCommentContent(@RequestBody BatchAddCommentContentReqDTO batchAddCommentContentReqDTO);
+    @PostMapping(value = PREFIX + "/comment/content/batchFind")
+    Response<List<FindCommentContentRspDTO>> batchFindCommentContent(@RequestBody BatchFindCommentContentReqDTO batchFindCommentContentReqDTO);
 }
 

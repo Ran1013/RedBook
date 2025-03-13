@@ -1,7 +1,10 @@
 package com.ran.redbook.comment.biz.controller;
 
 import com.RedBook.framework.biz.operationlog.aspect.ApiOperationLog;
+import com.RedBook.framework.common.response.PageResponse;
 import com.RedBook.framework.common.response.Response;
+import com.ran.redbook.comment.biz.model.vo.FindCommentItemRspVO;
+import com.ran.redbook.comment.biz.model.vo.FindCommentPageListReqVO;
 import com.ran.redbook.comment.biz.model.vo.PublishCommentReqVO;
 import com.ran.redbook.comment.biz.service.CommentService;
 import jakarta.annotation.Resource;
@@ -28,5 +31,9 @@ public class CommentController {
     public Response<?> publishComment(@Validated @RequestBody PublishCommentReqVO publishCommentReqVO) {
         return commentService.publishComment(publishCommentReqVO);
     }
-
+    @PostMapping("/list")
+    @ApiOperationLog(description = "评论分页查询")
+    public PageResponse<FindCommentItemRspVO> findCommentPageList(@Validated @RequestBody FindCommentPageListReqVO findCommentPageListReqVO) {
+        return commentService.findCommentPageList(findCommentPageListReqVO);
+    }
 }
