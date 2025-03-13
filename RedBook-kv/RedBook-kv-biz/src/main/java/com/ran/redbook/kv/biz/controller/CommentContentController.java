@@ -4,6 +4,7 @@ import com.RedBook.framework.biz.operationlog.aspect.ApiOperationLog;
 import com.RedBook.framework.common.response.Response;
 import com.ran.redbook.kv.biz.service.CommentContentService;
 import com.ran.redbook.kv.dto.req.BatchAddCommentContentReqDTO;
+import com.ran.redbook.kv.dto.req.BatchFindCommentContentReqDTO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -29,4 +30,9 @@ public class CommentContentController {
         return commentContentService.batchAddCommentContent(batchAddCommentContentReqDTO);
     }
 
+    @PostMapping(value = "/comment/content/batchFind")
+    @ApiOperationLog(description = "批量查询评论内容")
+    public Response<?> batchFindCommentContent(@Validated @RequestBody BatchFindCommentContentReqDTO batchFindCommentContentReqDTO) {
+        return commentContentService.batchFindCommentContent(batchFindCommentContentReqDTO);
+    }
 }
