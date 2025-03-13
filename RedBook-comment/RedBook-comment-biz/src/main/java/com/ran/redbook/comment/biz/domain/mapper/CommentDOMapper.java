@@ -38,6 +38,13 @@ public interface CommentDOMapper {
     CommentDO selectEarliestByParentId(Long parentId);
 
     /**
+     * 查询热门评论
+     * @param noteId
+     * @return
+     */
+    List<CommentDO> selectHeatComments(Long noteId);
+
+    /**
      * 查询评论分页数据
      * @param noteId
      * @param offset
@@ -47,6 +54,7 @@ public interface CommentDOMapper {
     List<CommentDO> selectPageList(@Param("noteId") Long noteId,
                                    @Param("offset") long offset,
                                    @Param("pageSize") long pageSize);
+
     /**
      * 批量查询二级评论
      * @param commentIds
