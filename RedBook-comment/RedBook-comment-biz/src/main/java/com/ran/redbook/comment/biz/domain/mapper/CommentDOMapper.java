@@ -31,18 +31,18 @@ public interface CommentDOMapper {
     List<CommentDO> selectByCommentIds(@Param("commentIds") List<Long> commentIds);
 
     /**
+     * 批量查询二级评论
+     * @param commentIds
+     * @return
+     */
+    List<CommentDO> selectTwoLevelCommentByIds(@Param("commentIds") List<Long> commentIds);
+
+    /**
      * 查询一级评论下最早回复的评论
      * @param parentId
      * @return
      */
     CommentDO selectEarliestByParentId(Long parentId);
-
-    /**
-     * 查询热门评论
-     * @param noteId
-     * @return
-     */
-    List<CommentDO> selectHeatComments(Long noteId);
 
     /**
      * 查询评论分页数据
@@ -56,11 +56,29 @@ public interface CommentDOMapper {
                                    @Param("pageSize") long pageSize);
 
     /**
-     * 批量查询二级评论
-     * @param commentIds
+     * 查询二级评论分页数据
+     * @param parentId
+     * @param offset
+     * @param pageSize
      * @return
      */
-    List<CommentDO> selectTwoLevelCommentByIds(@Param("commentIds") List<Long> commentIds);
+    List<CommentDO> selectChildPageList(@Param("parentId") Long parentId,
+                                        @Param("offset") long offset,
+                                        @Param("pageSize") long pageSize);
+
+    /**
+     * 查询热门评论
+     * @param noteId
+     * @return
+     */
+    List<CommentDO> selectHeatComments(Long noteId);
+
+    /**
+     * 查询一级评论下子评论总数
+     * @param commentId
+     * @return
+     */
+    Long selectChildCommentTotalById(Long commentId);
 
     int updateByPrimaryKeySelective(CommentDO record);
 
@@ -83,4 +101,5 @@ public interface CommentDOMapper {
      */
     int updateFirstReplyCommentIdByPrimaryKey(@Param("firstReplyCommentId") Long firstReplyCommentId,
                                               @Param("id") Long id);
+
 }

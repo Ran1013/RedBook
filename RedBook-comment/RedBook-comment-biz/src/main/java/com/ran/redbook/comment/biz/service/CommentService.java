@@ -2,9 +2,7 @@ package com.ran.redbook.comment.biz.service;
 
 import com.RedBook.framework.common.response.PageResponse;
 import com.RedBook.framework.common.response.Response;
-import com.ran.redbook.comment.biz.model.vo.FindCommentItemRspVO;
-import com.ran.redbook.comment.biz.model.vo.FindCommentPageListReqVO;
-import com.ran.redbook.comment.biz.model.vo.PublishCommentReqVO;
+import com.ran.redbook.comment.biz.model.vo.*;
 
 /**
  *  评论业务
@@ -23,4 +21,11 @@ public interface CommentService {
      * @return
      */
     PageResponse<FindCommentItemRspVO> findCommentPageList(FindCommentPageListReqVO findCommentPageListReqVO);
+
+    /**
+     * 二级评论分页查询
+     * @param findChildCommentPageListReqVO
+     * @return
+     */
+    PageResponse<FindChildCommentItemRspVO> findChildCommentPageList(FindChildCommentPageListReqVO findChildCommentPageListReqVO);
 }
