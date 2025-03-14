@@ -26,6 +26,11 @@ public class RedisKeyConstants {
     private static final String COMMENT_LIST_KEY_PREFIX = "comment:list:";
 
     /**
+     * Key 前缀：二级评论分页 ZSET
+     */
+    private static final String CHILD_COMMENT_LIST_KEY_PREFIX = "comment:childList:";
+
+    /**
      * Key 前缀：评论详情 JSON
      */
     private static final String COMMENT_DETAIL_KEY_PREFIX = "comment:detail:";
@@ -70,6 +75,15 @@ public class RedisKeyConstants {
      */
     public static String buildCommentListKey(Long noteId) {
         return COMMENT_LIST_KEY_PREFIX + noteId;
+    }
+
+    /**
+     * 构建子评论分页 ZSET 完整 KEY
+     * @param commentId
+     * @return
+     */
+    public static String buildChildCommentListKey(Long commentId) {
+        return CHILD_COMMENT_LIST_KEY_PREFIX + commentId;
     }
 
     /**
