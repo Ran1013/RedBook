@@ -36,4 +36,10 @@ public interface CommentService {
      */
     Response<?> likeComment(LikeCommentReqVO likeCommentReqVO);
 
+    /**
+     * 取消评论点赞
+     * @param unLikeCommentReqVO
+     * @return
+     */
+    Response<?> unlikeComment(UnLikeCommentReqVO unLikeCommentReqVO);
 }
