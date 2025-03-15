@@ -63,9 +63,9 @@ public class FindCommentItemRspVO {
      * 最早回复的评论
      */
     private FindCommentItemRspVO firstReplyComment;
+
     /**
      * 热度值
      */
     private Double heat;
 }
-

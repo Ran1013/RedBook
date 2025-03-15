@@ -5,7 +5,7 @@ import com.RedBook.framework.common.response.Response;
 import com.ran.redbook.comment.biz.model.vo.*;
 
 /**
- *  评论业务
+ * 评论业务
  **/
 public interface CommentService {
 
@@ -15,6 +15,7 @@ public interface CommentService {
      * @return
      */
     Response<?> publishComment(PublishCommentReqVO publishCommentReqVO);
+
     /**
      * 评论列表分页查询
      * @param findCommentPageListReqVO
@@ -42,4 +43,11 @@ public interface CommentService {
      * @return
      */
     Response<?> unlikeComment(UnLikeCommentReqVO unLikeCommentReqVO);
+
+    /**
+     * 删除评论
+     * @param deleteCommentReqVO
+     * @return
+     */
+    Response<?> deleteComment(DeleteCommentReqVO deleteCommentReqVO);
 }

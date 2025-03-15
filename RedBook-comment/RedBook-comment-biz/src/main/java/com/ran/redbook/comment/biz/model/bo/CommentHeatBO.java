@@ -22,6 +22,7 @@ public class CommentHeatBO {
      * 热度值
      */
     private Double heat;
+
     /**
      * 笔记 ID
      */

@@ -29,6 +29,7 @@ public class CommentController {
     public Response<?> publishComment(@Validated @RequestBody PublishCommentReqVO publishCommentReqVO) {
         return commentService.publishComment(publishCommentReqVO);
     }
+
     @PostMapping("/list")
     @ApiOperationLog(description = "评论分页查询")
     public PageResponse<FindCommentItemRspVO> findCommentPageList(@Validated @RequestBody FindCommentPageListReqVO findCommentPageListReqVO) {
@@ -46,9 +47,16 @@ public class CommentController {
     public Response<?> likeComment(@Validated @RequestBody LikeCommentReqVO likeCommentReqVO) {
         return commentService.likeComment(likeCommentReqVO);
     }
+
     @PostMapping("/unlike")
     @ApiOperationLog(description = "评论取消点赞")
     public Response<?> unlikeComment(@Validated @RequestBody UnLikeCommentReqVO unLikeCommentReqVO) {
         return commentService.unlikeComment(unLikeCommentReqVO);
+    }
+
+    @PostMapping("/delete")
+    @ApiOperationLog(description = "删除评论")
+    public Response<?> deleteComment(@Validated @RequestBody DeleteCommentReqVO deleteCommentReqVO) {
+        return commentService.deleteComment(deleteCommentReqVO);
     }
 }

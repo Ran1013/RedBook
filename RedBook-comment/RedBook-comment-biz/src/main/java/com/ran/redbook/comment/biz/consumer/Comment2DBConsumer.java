@@ -41,7 +41,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- *  评论批量写库
+ * 评论批量写库
  **/
 @Component
 @Slf4j
@@ -65,16 +65,6 @@ public class Comment2DBConsumer {
     // 每秒创建 1000 个令牌
     private RateLimiter rateLimiter = RateLimiter.create(1000);
 
-    // 将 isValidJson 方法移到 Comment2DBConsumer 类中
-    // 添加一个方法用于验证 JSON 格式
-    private boolean isValidJson(String json) {
-        try {
-            JsonUtils.parseObject(json, Object.class);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
     @Bean
     public DefaultMQPushConsumer mqPushConsumer() throws MQClientException {
         // Group 组
@@ -107,28 +97,11 @@ public class Comment2DBConsumer {
 
                 // 消息体 Json 字符串转 DTO
                 List<PublishCommentMqDTO> publishCommentMqDTOS = Lists.newArrayList();
-
-               /* msgs.forEach(msg -> {
-                    String msgJson = new String(msg.getBody());
-                    log.info("==> Consumer - Received message: {}", msgJson);
-                    publishCommentMqDTOS.add(JsonUtils.parseObject(msgJson, PublishCommentMqDTO.class));
-                });*/
-
                 msgs.forEach(msg -> {
                     String msgJson = new String(msg.getBody());
                     log.info("==> Consumer - Received message: {}", msgJson);
-                    try {
-                        // 验证消息体是否为有效 JSON
-                        if (isValidJson(msgJson)) {
-                            publishCommentMqDTOS.add(JsonUtils.parseObject(msgJson, PublishCommentMqDTO.class));
-                        } else {
-                            log.error("==> 消息体不是有效的 JSON 格式: {}", msgJson);
-                        }
-                    } catch (Exception e) {
-                        log.error("==> JSON 解析异常: {}", msgJson, e);
-                    }
+                    publishCommentMqDTOS.add(JsonUtils.parseObject(msgJson, PublishCommentMqDTO.class));
                 });
-
 
                 // 提取所有不为空的回复评论 ID
                 List<Long> replyCommentIds = publishCommentMqDTOS.stream()

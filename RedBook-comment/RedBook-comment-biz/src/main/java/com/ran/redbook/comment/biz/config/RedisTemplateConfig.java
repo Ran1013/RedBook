@@ -8,7 +8,7 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
- *  RedisTemplate 配置
+ * RedisTemplate 配置
  **/
 @Configuration
 public class RedisTemplateConfig {

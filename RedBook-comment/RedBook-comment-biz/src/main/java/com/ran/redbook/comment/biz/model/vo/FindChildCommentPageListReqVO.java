@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- *  查询二级评论分页数据
+ * 查询二级评论分页数据
  **/
 @Data
 @AllArgsConstructor

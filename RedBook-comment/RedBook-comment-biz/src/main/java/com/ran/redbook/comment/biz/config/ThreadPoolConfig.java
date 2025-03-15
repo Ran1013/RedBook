@@ -8,13 +8,13 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- *  自定义线程池
+ * 自定义线程池
  **/
 @Configuration
 public class ThreadPoolConfig {
 
     @Bean(name = "taskExecutor")
-    public ThreadPoolTaskExecutor taskExecutor() {
+    public Executor taskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         // 核心线程数
         executor.setCorePoolSize(10);
@@ -25,7 +25,7 @@ public class ThreadPoolConfig {
         // 线程活跃时间（秒）
         executor.setKeepAliveSeconds(30);
         // 线程名前缀
-        executor.setThreadNamePrefix("AuthExecutor-");
+        executor.setThreadNamePrefix("NoteExecutor-");
 
         // 拒绝策略：由调用线程处理（一般为主线程）
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());

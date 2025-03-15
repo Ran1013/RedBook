@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- *  评论发布
+ * 评论发布
  **/
 @Data
 @AllArgsConstructor

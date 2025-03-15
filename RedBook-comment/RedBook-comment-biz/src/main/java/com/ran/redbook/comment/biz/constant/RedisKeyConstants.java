@@ -1,7 +1,7 @@
 package com.ran.redbook.comment.biz.constant;
 
 /**
- *  Redis 常量类
+ * Redis 常量类
  **/
 public class RedisKeyConstants {
 

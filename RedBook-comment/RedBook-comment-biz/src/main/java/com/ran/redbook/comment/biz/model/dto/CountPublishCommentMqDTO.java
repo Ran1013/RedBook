@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- *  发送给计数服务：评论发布
+ * 发送给计数服务：评论发布
  **/
 @Data
 @AllArgsConstructor
@@ -33,4 +33,5 @@ public class CountPublishCommentMqDTO {
      * 父 ID
      */
     private Long parentId;
+
 }

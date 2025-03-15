@@ -7,7 +7,7 @@ import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
 /**
- * Spring Retry 重试配置
+ *  Spring Retry 重试配置
  **/
 @Configuration
 public class RetryConfig {

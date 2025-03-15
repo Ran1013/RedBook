@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- *  点赞、取消点赞评论
+ * 点赞、取消点赞评论
  **/
 @Data
 @AllArgsConstructor

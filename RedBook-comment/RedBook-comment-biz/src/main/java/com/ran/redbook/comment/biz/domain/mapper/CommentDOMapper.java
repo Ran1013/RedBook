@@ -31,6 +31,22 @@ public interface CommentDOMapper {
     List<CommentDO> selectByCommentIds(@Param("commentIds") List<Long> commentIds);
 
     /**
+     * 批量查询计数数据
+     * @param commentIds
+     * @return
+     */
+    List<CommentDO> selectCommentCountByIds(@Param("commentIds") List<Long> commentIds);
+
+    /**
+     * 查询子评论
+     * @param parentId
+     * @param limit
+     * @return
+     */
+    List<CommentDO> selectChildCommentsByParentIdAndLimit(@Param("parentId") Long parentId,
+                                                          @Param("limit") int limit);
+
+    /**
      * 批量查询二级评论
      * @param commentIds
      * @return
@@ -101,19 +117,5 @@ public interface CommentDOMapper {
      */
     int updateFirstReplyCommentIdByPrimaryKey(@Param("firstReplyCommentId") Long firstReplyCommentId,
                                               @Param("id") Long id);
-    /**
-     * 批量查询计数数据
-     * @param commentIds
-     * @return
-     */
-    List<CommentDO> selectCommentCountByIds(@Param("commentIds") List<Long> commentIds);
 
-    /**
-     * 查询子评论
-     * @param parentId
-     * @param limit
-     * @return
-     */
-    List<CommentDO> selectChildCommentsByParentIdAndLimit(@Param("parentId") Long parentId,
-                                                          @Param("limit") int limit);
 }

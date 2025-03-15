@@ -26,22 +26,47 @@
     like_total, parent_id, reply_comment_id, reply_user_id, is_top, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select
+    select 
     <include refid="Base_Column_List" />
     from t_comment
     where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByReplyCommentId" resultMap="BaseResultMap" parameterType="long">
+    select
+    <include refid="Base_Column_List" />
+    from t_comment
+    where reply_comment_id = #{commentId}
   </select>
 
   <select id="selectByCommentIds" resultMap="BaseResultMap" parameterType="list">
     select
     id, user_id, content_uuid, is_content_empty, image_url, like_total,
     is_top, create_time, first_reply_comment_id, child_comment_total,
-    level, parent_id, heat, note_id
+    level, parent_id, heat, note_id, reply_comment_id, reply_user_id
     from t_comment
     where id in
     <foreach collection="commentIds" open="(" separator="," close=")" item="commentId">
       #{commentId}
     </foreach>
+  </select>
+
+  <select id="selectCommentCountByIds" resultMap="BaseResultMap" parameterType="list">
+    select
+    id, child_comment_total, like_total, level
+    from t_comment
+    where id in
+    <foreach collection="commentIds" open="(" separator="," close=")" item="commentId">
+      #{commentId}
+    </foreach>
+  </select>
+
+  <select id="selectChildCommentsByParentIdAndLimit" resultMap="BaseResultMap" parameterType="map">
+    select id, create_time
+    from t_comment
+    where parent_id = #{parentId} and level = 2
+    order by create_time asc
+      limit #{limit}
   </select>
 
   <select id="selectTwoLevelCommentByIds" resultMap="BaseResultMap" parameterType="list">
@@ -85,40 +110,36 @@
     select child_comment_total from t_comment
     where id = #{commentId} and level = 1
   </select>
-  <select id="selectCommentCountByIds" resultMap="BaseResultMap" parameterType="list">
-    select
-    id, child_comment_total, like_total, level
-    from t_comment
-    where id in
-    <foreach collection="commentIds" open="(" separator="," close=")" item="commentId">
-      #{commentId}
-    </foreach>
-  </select>
-  <select id="selectChildCommentsByParentIdAndLimit" resultMap="BaseResultMap" parameterType="map">
-    select id, create_time
-    from t_comment
-    where parent_id = #{parentId} and level = 2
-    order by create_time asc
-      limit #{limit}
-  </select>
-
-
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_comment
     where id = #{id,jdbcType=BIGINT}
   </delete>
+
+  <delete id="deleteByParentId" parameterType="long">
+    delete from t_comment
+    where parent_id = #{commentId}
+  </delete>
+
+  <delete id="deleteByIds" parameterType="map">
+    delete from t_comment
+    where id in
+    <foreach collection="commentIds" item="commentId" open="(" separator="," close=")">
+      #{commentId}
+    </foreach>
+  </delete>
+
   <insert id="insert" parameterType="com.ran.redbook.comment.biz.domain.dataobject.CommentDO">
-    insert into t_comment (id, content, avatar,
-                           nickname, mail, website,
-                           router_url, create_time, update_time,
-                           is_deleted, reply_comment_id, parent_comment_id,
-                           reason, `status`)
-    values (#{id,jdbcType=BIGINT}, #{content,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR},
-            #{nickname,jdbcType=VARCHAR}, #{mail,jdbcType=VARCHAR}, #{website,jdbcType=VARCHAR},
-            #{routerUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
-            #{isDeleted,jdbcType=TINYINT}, #{replyCommentId,jdbcType=BIGINT}, #{parentCommentId,jdbcType=BIGINT},
-            #{reason,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT})
+    insert into t_comment (id, content, avatar, 
+      nickname, mail, website, 
+      router_url, create_time, update_time, 
+      is_deleted, reply_comment_id, parent_comment_id, 
+      reason, `status`)
+    values (#{id,jdbcType=BIGINT}, #{content,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, 
+      #{nickname,jdbcType=VARCHAR}, #{mail,jdbcType=VARCHAR}, #{website,jdbcType=VARCHAR}, 
+      #{routerUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{isDeleted,jdbcType=TINYINT}, #{replyCommentId,jdbcType=BIGINT}, #{parentCommentId,jdbcType=BIGINT}, 
+      #{reason,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT})
   </insert>
 
   <insert id="batchInsert" parameterType="list">
@@ -275,18 +296,18 @@
   <update id="updateByPrimaryKey" parameterType="com.ran.redbook.comment.biz.domain.dataobject.CommentDO">
     update t_comment
     set content = #{content,jdbcType=VARCHAR},
-        avatar = #{avatar,jdbcType=VARCHAR},
-        nickname = #{nickname,jdbcType=VARCHAR},
-        mail = #{mail,jdbcType=VARCHAR},
-        website = #{website,jdbcType=VARCHAR},
-        router_url = #{routerUrl,jdbcType=VARCHAR},
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-        is_deleted = #{isDeleted,jdbcType=TINYINT},
-        reply_comment_id = #{replyCommentId,jdbcType=BIGINT},
-        parent_comment_id = #{parentCommentId,jdbcType=BIGINT},
-        reason = #{reason,jdbcType=VARCHAR},
-        `status` = #{status,jdbcType=TINYINT}
+      avatar = #{avatar,jdbcType=VARCHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      mail = #{mail,jdbcType=VARCHAR},
+      website = #{website,jdbcType=VARCHAR},
+      router_url = #{routerUrl,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=TINYINT},
+      reply_comment_id = #{replyCommentId,jdbcType=BIGINT},
+      parent_comment_id = #{parentCommentId,jdbcType=BIGINT},
+      reason = #{reason,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
