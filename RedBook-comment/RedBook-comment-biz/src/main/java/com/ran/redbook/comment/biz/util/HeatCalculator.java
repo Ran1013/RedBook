@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 /**
- * 热度值计算
+ *  热度值计算
  **/
 public class HeatCalculator {
 

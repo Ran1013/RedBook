@@ -27,7 +27,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 更新一级评论的 first_reply_comment_id 字段值
+ *  更新一级评论的 first_reply_comment_id 字段值
  **/
 @Component
 @RocketMQMessageListener(consumerGroup = "redbook_group_first_reply_comment_id" + MQConstants.TOPIC_COUNT_NOTE_COMMENT, // Group 组

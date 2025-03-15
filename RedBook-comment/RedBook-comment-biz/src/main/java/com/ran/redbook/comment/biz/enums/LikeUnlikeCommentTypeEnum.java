@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 评论点赞、取消点赞 Type
+ *  评论点赞、取消点赞 Type
  **/
 @Getter
 @AllArgsConstructor

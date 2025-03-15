@@ -57,7 +57,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
- *  评论业务
+ * 评论业务
  **/
 @Service
 @Slf4j
@@ -752,6 +752,16 @@ public class CommentServiceImpl implements CommentService {
         });
 
         return Response.success();
+    }
+
+    /**
+     * 删除本地评论缓存
+     *
+     * @param commentId
+     */
+    @Override
+    public void deleteCommentLocalCache(Long commentId) {
+        LOCAL_CACHE.invalidate(commentId);
     }
 
     /**

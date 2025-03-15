@@ -29,7 +29,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * 评论点赞、取消点赞批量写库
+ *  评论点赞、取消点赞批量写库
  **/
 @Component
 @Slf4j

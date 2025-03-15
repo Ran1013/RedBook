@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.util.Objects;
 
 /**
- * 评论取消点赞：执行 Lua 脚本返回结果
+ *  评论取消点赞：执行 Lua 脚本返回结果
  **/
 @Getter
 @AllArgsConstructor

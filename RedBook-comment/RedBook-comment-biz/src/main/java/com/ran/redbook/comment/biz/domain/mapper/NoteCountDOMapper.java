@@ -1,6 +1,7 @@
 package com.ran.redbook.comment.biz.domain.mapper;
 
 import com.ran.redbook.comment.biz.domain.dataobject.NoteCountDO;
+import org.apache.ibatis.annotations.Param;
 
 public interface NoteCountDOMapper {
     int deleteByPrimaryKey(Long id);
@@ -21,4 +22,13 @@ public interface NoteCountDOMapper {
     int updateByPrimaryKeySelective(NoteCountDO record);
 
     int updateByPrimaryKey(NoteCountDO record);
+
+    /**
+     * 更新评论总数
+     * @param noteId
+     * @param count
+     * @return
+     */
+    int updateCommentTotalByNoteId(@Param("noteId") Long noteId,
+                                   @Param("count") int count);
 }

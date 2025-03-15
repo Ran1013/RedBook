@@ -10,6 +10,20 @@ import java.util.List;
 public interface CommentDOMapper {
     int deleteByPrimaryKey(Long id);
 
+    /**
+     * 删除一级评论下，所有二级评论
+     * @param commentId
+     * @return
+     */
+    int deleteByParentId(Long commentId);
+
+    /**
+     * 批量删除评论
+     * @param commentIds
+     * @return
+     */
+    int deleteByIds(@Param("commentIds") List<Long> commentIds);
+
     int insert(CommentDO record);
 
     /**
@@ -22,6 +36,13 @@ public interface CommentDOMapper {
     int insertSelective(CommentDO record);
 
     CommentDO selectByPrimaryKey(Long id);
+
+    /**
+     * 根据 reply_comment_id 查询
+     * @param commentId
+     * @return
+     */
+    CommentDO selectByReplyCommentId(Long commentId);
 
     /**
      * 根据评论 ID 批量查询
