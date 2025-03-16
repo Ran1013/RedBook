@@ -6,7 +6,7 @@ package com.ran.redbook.user.biz.constant;
 public class RedisKeyConstants {
 
     /**
-     * 小哈书全局 ID 生成器 KEY
+     * RedBook 全局 ID 生成器 KEY
      */
     public static final String REDBOOK_ID_GENERATOR_KEY = "redbook.id.generator";
 

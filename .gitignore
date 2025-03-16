@@ -40,3 +40,7 @@ build/
 logs/
 *.log
 
+# Maven flatten plugin
+.flattened-pom.xml
+**/.flattened-pom.xml
+
